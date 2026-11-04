@@ -26,6 +26,7 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Decisions needing approval |
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Proposed RBAC matrix (Phase 2) |
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
+| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging host (Vercel), DNS CNAME, env + auth callback checklist |
 
 ---
 
@@ -57,7 +58,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and staging (non-production) deploy.
+Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and `docs/STAGING_DEPLOY.md` for customer-test staging on Vercel.
 
 ### Scripts
 
@@ -67,12 +68,20 @@ Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` w
 | `npm run build` | Production build |
 | `npm run start` | Start production server |
 | `npm run lint` | ESLint |
+| `npm run check:supabase-env` | Presence-only env check (no secret values printed) |
 
 ### Environment
 
 Copy `.env.example` → `.env.local` and fill placeholders when a Supabase project exists. Phase 1 uses **stubs only** — no live Supabase connection is required to run the shell.
 
 **Never** put the service-role key in `NEXT_PUBLIC_*` variables or client code.
+
+### Staging (customer test)
+
+- **URL:** `https://machinehire.ew.com.zm` (subdomain was unused / NXDOMAIN at last probe — see staging doc).
+- **Host:** Vercel + GitHub `Ahlamgit/EW-MachineHire` (Phase 2 branch or based-on branch).
+- **DNS:** add only a `machinehire` **CNAME** to the target Vercel shows. Do **not** change root, www, nameservers, or email/MX.
+- Details: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
 
 ---
 
@@ -96,7 +105,7 @@ supabase/migrations  SQL migrations (none applied yet)
 
 **Phase 2:** auth routes, middleware session protection, Proposed RBAC schema + RLS SQL, permission helpers, users page catalogue. Live auth/RLS verification requires your Supabase project (`docs/AUTH_SETUP.md`).
 
-Not included yet: real machine/customer/hire modules, finance, branch ACL, deployment, offline PWA.
+Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging deploy prep is documented in `docs/STAGING_DEPLOY.md`.
 
 ---
 

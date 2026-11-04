@@ -65,7 +65,7 @@ File: `supabase/migrations/20261104120000_phase2_auth_rbac.sql`
 ## 4. Enable Email auth
 
 1. Authentication → Providers → Email enabled.
-2. Configure Site URL / redirect URLs for local (`http://localhost:3000/auth/callback`) and staging.
+2. Configure Site URL / redirect URLs for local (`http://localhost:3000/auth/callback`) and staging (`https://machinehire.ew.com.zm/auth/callback`).
 3. Create the first user (dashboard or invite).
 4. In SQL, ensure a `profiles` row exists (trigger on `auth.users` insert handles new users) and assign `admin`:
 
@@ -90,20 +90,27 @@ Sign in at `/login`. Protected app routes require a session when Supabase is con
 
 ## 6. Online staging deployment (non-production)
 
-Do **not** deploy to production (`https://machinehire.ew.com.zm`) from this guide.
+Full DNS + Vercel click-path: **`docs/STAGING_DEPLOY.md`**.
 
-1. Choose a staging host (e.g. Vercel / similar) pointed at branch `cursor/phase-2-auth-rbac-f54e` or a dedicated staging branch based on it.
-2. Set staging environment variables (names only — paste values in the host UI, never in chat/git):
+Customer-test URL (also the intended final hostname): `https://machinehire.ew.com.zm`.  
+Until go-live hardening (Phase 9), treat that host as **staging**: use a **non-production** Supabase project and staging env values only.
+
+**Preserve:** public site `https://ew.com.zm` / `www`, nameservers, and Titan email/MX — add only a `machinehire` CNAME (see staging doc).
+
+1. Host: **Vercel**, GitHub repo `Ahlamgit/EW-MachineHire`, branch `cursor/phase-2-auth-rbac-f54e` (or a branch based on it).
+2. Set staging environment variables (names only — paste values in the Vercel UI, never in chat/git):
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` (server-only; if you need admin path / future privileged jobs)
-   - `NEXT_PUBLIC_APP_URL` = your staging URL (e.g. `https://your-app-staging.example`)
+   - `NEXT_PUBLIC_APP_URL` = `https://machinehire.ew.com.zm`
    - Ensure `DEV_ALLOW_UNCONFIGURED_SHELL` is **unset** or `false`
-3. In Supabase Auth settings, add the staging Site URL and redirect URL:  
-   `https://YOUR_STAGING_HOST/auth/callback`
+3. In Supabase Auth settings (staging/dev project):
+   - **Site URL:** `https://machinehire.ew.com.zm`
+   - **Redirect URL:** `https://machinehire.ew.com.zm/auth/callback`
+   - Keep local: `http://localhost:3000/auth/callback`
 4. Confirm the Phase 2 migration is applied on the **same** development/staging Supabase project the staging app uses.
-5. Deploy the build (`npm run build` / host pipeline). Smoke-test `/login` and a protected route.
-6. Do **not** auto-merge PRs; do **not** point staging secrets at production.
+5. Deploy the build (Vercel Git deploy / `npm run build`). Smoke-test `/login` and a protected route.
+6. Do **not** auto-merge PRs; do **not** point staging secrets at a production Supabase project.
 
 ## 7. What remains unverified without credentials on this agent VM
 

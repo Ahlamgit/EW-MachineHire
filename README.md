@@ -31,6 +31,8 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Company-PC scheduled Free-tier backup / restore drill / inactivity wake |
 | [`docs/EMAIL_SMTP.md`](docs/EMAIL_SMTP.md) | Titan mailbox + Supabase custom SMTP (Auth); Q13 in-app alerts first |
 | [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging Path A: Netlify Free `*.netlify.app` (zero DNS) — exact user clicks |
+| [`docs/STAGING_VERIFY.md`](docs/STAGING_VERIFY.md) | Post-Netlify-connect verification checklist |
+| [`docs/LIVE_VS_DEMO.md`](docs/LIVE_VS_DEMO.md) | What is live Supabase vs DEMO placeholders |
 | [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md) | Host-agnostic `build`/`start`, env, migrations, backups, Hostinger later |
 | [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
 | [`deploy/netlify/README.md`](deploy/netlify/README.md) | Optional Netlify / OpenNext isolation (not required for Node hosts) |
@@ -76,6 +78,8 @@ Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` w
 | `npm run start` | Start production server |
 | `npm run lint` | ESLint |
 | `npm run check:supabase-env` | Presence-only env check (no secret values printed) |
+| `npm run check:migrations` | List committed SQL + Phase 2 apply checklist (no DB connection) |
+| `npm run smoke:auth` | Auth env presence + optional HTTP probe (`--url https://…`) |
 | `npm run capacity:seed` | Seed DEMO capacity data (160 & 200 machines) for Free-tier size measurement |
 | `npm run capacity:measure` | Report DB/headroom estimates (no secrets printed) |
 | `npm run backup:export` | Scheduled logical DB export (needs `scripts/backup/backup.env`) |

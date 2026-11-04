@@ -22,7 +22,8 @@ This folder documents Netlify-specific staging. The runtime config Netlify Git r
 | App business data | **Supabase only** — never hosting-local files |
 
 Full portable runbook: [`docs/PORTABLE_HOSTING.md`](../../docs/PORTABLE_HOSTING.md).  
-Customer-test Path A (`*.netlify.app`, zero DNS): [`docs/STAGING_DEPLOY.md`](../../docs/STAGING_DEPLOY.md).
+Customer-test Path A (`*.netlify.app`, zero DNS): [`docs/STAGING_DEPLOY.md`](../../docs/STAGING_DEPLOY.md).  
+After connect: [`docs/STAGING_VERIFY.md`](../../docs/STAGING_VERIFY.md). Live vs DEMO: [`docs/LIVE_VS_DEMO.md`](../../docs/LIVE_VS_DEMO.md).
 
 ## Removing Netlify later
 

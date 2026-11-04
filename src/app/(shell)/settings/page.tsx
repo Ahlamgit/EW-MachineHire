@@ -1,26 +1,28 @@
 import { ModuleStub } from "@/components/shared/module-stub";
 import { FreeTierUsagePanel } from "@/components/settings/free-tier-usage-panel";
 import { getAuthContext } from "@/lib/auth/session";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "System settings" };
+
+type UsageSnapshot = {
+  source: "unavailable" | "server";
+  message: string;
+  dbUsedPct?: number | null;
+  storageUsedPct?: number | null;
+  assessedUsers?: number;
+  assessedMachines?: string;
+  profileCount?: number | null;
+};
 
 export default async function Page() {
   const ctx = await getAuthContext();
   const canSeeUsage =
     ctx.roles.includes("admin") || ctx.permissions.includes("settings:manage");
 
-  let snapshot:
-    | {
-        source: "unavailable" | "server";
-        message: string;
-        dbUsedPct?: number | null;
-        storageUsedPct?: number | null;
-        assessedUsers?: number;
-        assessedMachines?: string;
-      }
-    | undefined;
+  let snapshot: UsageSnapshot;
 
   if (!canSeeUsage) {
     snapshot = {
@@ -39,15 +41,40 @@ export default async function Page() {
       assessedMachines: "160–200",
     };
   } else {
-    snapshot = {
-      source: "server",
-      message:
-        "Call GET /api/admin/usage for JSON counts when the service role is set. Database megabytes still come from psql measure scripts or the Supabase Usage dashboard.",
-      assessedUsers: 4,
-      assessedMachines: "160–200",
-      dbUsedPct: null,
-      storageUsedPct: null,
-    };
+    const admin = createSupabaseAdminClient();
+    if (!admin) {
+      snapshot = {
+        source: "unavailable",
+        message:
+          "SUPABASE_SERVICE_ROLE_KEY not set on the server. Login still works without it. For profile counts via admin client, add the service-role key (server-only) or use scripts/measure-usage.mjs / Dashboard Usage.",
+        assessedUsers: 4,
+        assessedMachines: "160–200",
+        profileCount: null,
+      };
+    } else {
+      let profileCount: number | null = null;
+      try {
+        const { count, error } = await admin
+          .from("profiles")
+          .select("id", { count: "exact", head: true });
+        if (!error) profileCount = count;
+      } catch {
+        profileCount = null;
+      }
+
+      snapshot = {
+        source: "server",
+        message:
+          profileCount != null
+            ? `Live admin read: ${profileCount} profile row(s). DB megabytes still need Dashboard Usage or scripts/measure-usage.mjs.`
+            : "Service role present but profiles count failed (migration missing?). DB MB still from Dashboard / measure script.",
+        assessedUsers: 4,
+        assessedMachines: "160–200",
+        profileCount,
+        dbUsedPct: null,
+        storageUsedPct: null,
+      };
+    }
   }
 
   return (
@@ -55,7 +82,7 @@ export default async function Page() {
       <ModuleStub
         title="System settings"
         phase={2}
-        description="Settings module scaffold. Free-tier usage monitoring is available below; other settings arrive in later phases."
+        description="Settings module scaffold. Free-tier usage monitoring is available below; other settings arrive in later phases. Not a live hire/compliance control panel."
       />
       <FreeTierUsagePanel snapshot={snapshot} />
     </div>

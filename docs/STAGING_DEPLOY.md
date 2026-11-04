@@ -135,6 +135,22 @@ If login/authorize is inconvenient, use the **dashboard click-path in §1** only
 
 ---
 
+## 5b. After first green deploy — verification
+
+Full checklist (deploy, migrations, admin login, permissions, honest customer workflow): **[`STAGING_VERIFY.md`](./STAGING_VERIFY.md)**.
+
+Quick probes:
+
+```bash
+curl -sS https://<site>.netlify.app/api/health/ready
+npm run smoke:auth -- --url https://<site>.netlify.app
+npm run check:migrations
+```
+
+Live vs DEMO honesty matrix: **[`LIVE_VS_DEMO.md`](./LIVE_VS_DEMO.md)**.
+
+---
+
 ## 6. Done independently vs needs you
 
 | Done on this branch | Needs you |
@@ -143,8 +159,11 @@ If login/authorize is inconvenient, use the **dashboard click-path in §1** only
 | Isolated Netlify docs (`deploy/netlify/`, optional `netlify.toml`) | Paste staging Supabase env in Netlify UI |
 | Env / migration / backup / Auth URL documentation | Supabase Auth URLs + migration + admin role |
 | `npm run build` portable path unchanged | Browser authorize if using CLI; or dashboard-only |
-| No DNS mutation, no merge, no purchase | Share `*.netlify.app` for customer test |
-| Netlify CLI login attempted in agent — **blocked** on browser auth | Complete §1 clicks |
+| Post-connect verify checklist + live-vs-DEMO matrix | Run [`STAGING_VERIFY.md`](./STAGING_VERIFY.md) in browser |
+| Auth/RBAC live reads on dashboard + `/users`; DEMO labels clarified | Share `*.netlify.app` for customer test |
+| `check:migrations` / `smoke:auth` / `/api/health/ready` helpers | Complete §1 clicks |
+| No DNS mutation, no merge, no purchase | — |
+| Netlify CLI login attempted in agent — **blocked** on browser auth | — |
 
 ---
 

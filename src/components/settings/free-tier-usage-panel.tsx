@@ -15,6 +15,7 @@ export function FreeTierUsagePanel({
     storageUsedPct?: number | null;
     assessedUsers?: number;
     assessedMachines?: string;
+    profileCount?: number | null;
   };
 }) {
   const data = snapshot ?? {
@@ -34,7 +35,12 @@ export function FreeTierUsagePanel({
         <h2 id="free-tier-usage-heading" className="text-lg font-semibold">
           Free-tier usage
         </h2>
-        <Badge tone="neutral">Monitoring</Badge>
+        <Badge tone={data.source === "server" ? "green" : "neutral"}>
+          {data.source === "server" ? "Live admin read" : "Monitoring"}
+        </Badge>
+        {data.profileCount != null ? (
+          <Badge tone="blue">{data.profileCount} profiles</Badge>
+        ) : null}
       </div>
       <p className="text-sm text-[var(--color-muted)]">
         Working assessment: {data.assessedUsers ?? 4} users,{" "}

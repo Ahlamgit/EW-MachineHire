@@ -3,7 +3,7 @@
  * Clearly labeled — never treat as real customer/machine records.
  */
 export const DEMO_BANNER =
-  "DEMO data — sample figures for UI layout only. Not real machines, customers, or hires.";
+  "DEMO data — sample figures for UI layout only. Not real machines, customers, or hires. Auth/session may be live while this banner is shown; fleet numbers are still placeholders.";
 
 export const DEMO_DASHBOARD_CARDS = [
   {

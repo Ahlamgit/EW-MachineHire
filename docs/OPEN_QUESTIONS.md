@@ -26,7 +26,7 @@ Do not silently resolve these in application logic. When answered, move the deci
 ### Q7. Operator assignment?
 
 **Question:** Are operators assigned to **machines**, to **hire agreements**, to both, or not tracked in this system?  
-**Impact:** New entities, UI, permissions. (Operators are not a separate Confirmed module today.)
+**Impact:** New entities, UI, permissions. (Operators are not a separate Selected module today.)
 
 ---
 
@@ -34,8 +34,9 @@ Do not silently resolve these in application logic. When answered, move the deci
 
 ### Q3. Meaning of “road tracks”?
 
-**Question:** What exactly does “road tracks” mean in the compliance requirements (document type, inspection, physical tracks, roadworthiness certificate, other)?  
-**Impact:** Compliance document types, validation, UI labels.
+**Question:** What exactly does “road tracks” mean as a compliance artefact (document type, inspection certificate, physical-track reference, roadworthiness paper, other)?  
+**Impact:** Labels, upload types, validation copy.  
+**Already Confirmed (do not reopen):** Insurance, fitness, and road tracks share the **same renewal cycle** and status bands; status uses each record’s actual document Date; renewals recalculate only that document and preserve prior records — see `docs/BUSINESS_RULES.md`.
 
 ### Q6. Maintenance scheduling thresholds?
 

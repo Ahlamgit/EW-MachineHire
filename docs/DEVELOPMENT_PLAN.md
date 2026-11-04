@@ -105,7 +105,7 @@ Phased delivery below is **Confirmed** by the project foundation brief. Do not s
 - Breakdown and repair workflows.
 - Spare parts used on jobs.
 - Configurable thresholds (do not hard-code unconfirmed values).
-- Machine status interactions with hiring restrictions (undergoing fix/repair).
+- Machine status interactions with hiring restrictions (any fixing — including routine service or breakdown repair — blocks a new hire; every hire requires manual closure).
 
 **Depends on:** Phases 3 & 6; threshold decisions preferred but configurable defaults may be Proposed with documentation.  
 **Exit criteria:** Workshop can log work and block hire while in repair per Confirmed rules.
@@ -117,7 +117,7 @@ Phased delivery below is **Confirmed** by the project foundation brief. Do not s
 **Goals**
 
 - Operational dashboard (replace DEMO cards with live aggregates).
-- Reports / analytics (introduce Recharts where useful).
+- Reports / analytics (implement **selected** Recharts charts where useful — Recharts is selected but not yet implemented before this phase).
 - Notifications and alerts (in-app; email if Confirmed).
 - Audit history UI and complete coverage of sensitive actions.
 
@@ -135,7 +135,7 @@ Phased delivery below is **Confirmed** by the project foundation brief. Do not s
 - Staging validation; production Supabase project hardening.
 - Deploy to `https://machinehire.ew.com.zm`.
 - Runbooks, backup/restore checks, monitoring.
-- PWA offline still deferred unless newly Confirmed.
+- Responsive PWA remains the intended approach; offline still deferred unless newly Confirmed for go-live.
 
 **Depends on:** Phases 1–8 complete enough for production scope.  
 **Exit criteria:** Production go-live checklist signed off; no service-role keys client-side; docs updated to Confirmed production settings.

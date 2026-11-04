@@ -1,25 +1,24 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { BRAND } from "@/lib/constants/brand";
 
 type CompanyMarkProps = {
   compact?: boolean;
+  /** When false, skip requesting the logo file (avoids 404 until official asset is placed). */
+  hasLogo?: boolean;
 };
 
 /**
- * Company identity. Uses official logo when present at BRAND.logoPath;
- * otherwise falls back to text initials (do not generate a substitute logo).
+ * Company identity. Renders the official logo only when `hasLogo` is true
+ * (file at public/brand/ew-machine-hire-logo.jpg). Never generate a substitute logo.
  */
-export function CompanyMark({ compact = false }: CompanyMarkProps) {
-  const [logoFailed, setLogoFailed] = useState(false);
-
+export function CompanyMark({ compact = false, hasLogo = false }: CompanyMarkProps) {
   return (
-    <Link href="/" className="flex items-center gap-3 min-w-0">
+    <Link href="/" className="flex min-w-0 items-center gap-3">
       <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-md bg-[var(--ew-black)] text-[var(--ew-white)]">
-        {!logoFailed ? (
+        {hasLogo ? (
           <Image
             src={BRAND.logoPath}
             alt={`${BRAND.name} logo`}
@@ -27,7 +26,6 @@ export function CompanyMark({ compact = false }: CompanyMarkProps) {
             height={40}
             className="h-full w-full object-cover"
             unoptimized
-            onError={() => setLogoFailed(true)}
           />
         ) : (
           <span className="text-[10px] font-bold tracking-wide" aria-hidden>

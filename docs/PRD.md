@@ -1,11 +1,14 @@
 # EW Machine Hire — Product Requirements Document
 
-**Status legend:** **Confirmed** | **Proposed** | **Open**
+**Status legend:** **Selected** (project direction) | **Confirmed** (approved business rule) | **Proposed** | **Open**
 
 **Product:** EW Machine Hire — Heavy Equipment Hiring Management System  
-**Production URL (Confirmed):** https://machinehire.ew.com.zm  
-**Contact (Confirmed):** machinehire@ew.com.zm  
-**Phase covered by this document:** Phase 1 foundation (documentation + shell). Full module delivery follows `docs/DEVELOPMENT_PLAN.md`.
+**Production URL (Selected):** https://machinehire.ew.com.zm  
+**Contact (Selected):** machinehire@ew.com.zm  
+**Phase covered by this document:** Living product requirements; Phase delivery follows `docs/DEVELOPMENT_PLAN.md`.
+
+**Selected stack:** Next.js App Router, TypeScript strict, Tailwind, shadcn/ui, Supabase, Zod, React Hook Form, Lucide, Recharts (**selected but not yet implemented**), Git.  
+**Selected platform:** Responsive PWA as the intended approach; **offline deferred**.
 
 ---
 
@@ -32,7 +35,7 @@ Build a production-ready web application for managing heavy equipment hire opera
 - Do not connect to production Supabase or other live services.
 - Do not create real customer/machine data.
 - Do not deploy to production.
-- Do not implement offline/PWA caching yet (architecture must remain PWA-ready).
+- Do not implement offline caching yet (responsive PWA is the intended approach; offline is deferred).
 - Do not invent unresolved business rules (see `docs/OPEN_QUESTIONS.md`).
 
 ---
@@ -51,9 +54,9 @@ Build a production-ready web application for managing heavy equipment hire opera
 
 ---
 
-## 5. Modules (Confirmed — 19)
+## 5. Modules (Selected — 19)
 
-Build as modular features (folder-per-module under `src/features/`). Phase 1 scaffolds structure and shell only.
+These 19 modules are the **selected** product scope (not pending module-list approval). Build as modular features under `src/features/`. Implement per `docs/DEVELOPMENT_PLAN.md`; Phase 1 scaffolds structure and shell only.
 
 1. Dashboard  
 2. Machinery and equipment management  
@@ -99,26 +102,26 @@ Each machine detail view must organise content into these sections (Phase 1: nav
 
 ### 7.1 Compliance (Confirmed)
 
-- Retain actual document dates and expiry-related information.
-- Status bands:
-  - **Green:** less than 9 months
-  - **Yellow:** ≥ 9 months and &lt; 10 months
-  - **Red:** ≥ 10 months
-- Missing documents must be clearly identified.
-- Do not invent dates.
+See `docs/BUSINESS_RULES.md` for the full rule set. Summary:
+
+- **Insurance**, **fitness**, and **road tracks** share the same renewal cycle.
+- Calculate status from each record’s **actual document Date**, not application entry time.
+- **Green:** under 9 months · **Yellow:** 9 months to under 10 months · **Red:** 10 months onward (including 11+).
+- A renewal recalculates **only that document’s** status from its new Date; **preserve all previous records**.
+- Missing required documents must be identified; do not invent dates.
 
 ### 7.2 Hiring restrictions (Confirmed)
 
-A machine cannot be hired if:
+A machine cannot receive a **new hire** if:
 
 - It is already hired.
-- It is undergoing fixing or repair.
+- It is undergoing **any fixing**, including routine **service** or **breakdown repair**.
 - Any required compliance is missing, yellow, or red.
 
 Also Confirmed:
 
 - Prevent concurrent hire of the same machine (DB-level where appropriate).
-- Explicit hire closure process.
+- **Manual / explicit closure** for **every** hire, including fixed-duration hires (no silent auto-close).
 - Preserve full hiring history.
 
 ### 7.3 History (Confirmed)
@@ -150,13 +153,13 @@ Do not combine values of different units without explicit conversion. Preserve o
 
 ---
 
-## 9. Technical constraints (Confirmed)
+## 9. Technical constraints (Selected)
 
 - Next.js App Router, TypeScript strict, Tailwind CSS, shadcn/ui.
 - Supabase (Postgres, Auth, Storage).
-- Zod, React Hook Form, Lucide; Recharts for analytics (can defer until dashboards need charts).
+- Zod, React Hook Form, Lucide; **Recharts selected but not yet implemented** (add when charts are needed).
 - Git; stable compatible versions; minimal dependencies.
-- PWA-ready architecture; offline deferred.
+- **Responsive PWA** as the intended approach; **offline functionality deferred**.
 
 ---
 

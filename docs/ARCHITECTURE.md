@@ -1,25 +1,28 @@
 # EW Machine Hire — Architecture
 
-**Status legend:** **Confirmed** | **Proposed** | **Open**
+**Status legend:** **Selected** (project direction) | **Confirmed** (approved business rule) | **Proposed** | **Open**
 
 ---
 
-## 1. Overview (Confirmed)
+## 1. Overview (Selected stack)
 
-EW Machine Hire is a responsive web application built with:
+EW Machine Hire is a responsive web application. The foundation prompt **selected** this technology stack as the project direction (not pending stack approval):
 
 | Layer | Choice | Status |
 |-------|--------|--------|
-| UI framework | Next.js App Router | Confirmed |
-| Language | TypeScript (strict) | Confirmed |
-| Styling | Tailwind CSS + design tokens | Confirmed |
-| Components | shadcn/ui (+ Lucide icons) | Confirmed |
-| Forms / validation | React Hook Form + Zod | Confirmed |
-| Charts | Recharts (when dashboards need charts) | Confirmed (deferred in Phase 1 shell) |
-| Backend / data | Supabase (Postgres, Auth, Storage) | Confirmed |
-| VCS | Git | Confirmed |
+| UI framework | Next.js App Router | Selected |
+| Language | TypeScript (strict) | Selected |
+| Styling | Tailwind CSS + design tokens | Selected |
+| Components | shadcn/ui (+ Lucide icons) | Selected |
+| Forms / validation | React Hook Form + Zod | Selected |
+| Charts | Recharts | **Selected but not yet implemented** (install/use when dashboards/reports need charts; Phase 1 shell uses DEMO cards without charts) |
+| Backend / data | Supabase (Postgres, Auth, Storage) | Selected |
+| VCS | Git | Selected |
 
-PWA-ready architecture is required; **offline support is not implemented yet** (**Confirmed** deferral).
+### Platform approach (Selected)
+
+- **Responsive PWA** is the **intended** delivery approach (desktop / tablet / mobile).
+- **Offline functionality is deferred** — do not implement service-worker offline caching or sync in early phases; keep architecture compatible with a later PWA offline pass.
 
 ---
 
@@ -62,7 +65,7 @@ docs/                  # Product & engineering documentation
 supabase/migrations/   # SQL migrations (empty in Phase 1)
 ```
 
-Feature modules map 1:1 to the Confirmed module list in `docs/PRD.md`. Phase 1 creates folders and shell routes; business logic arrives in later phases.
+Feature modules map 1:1 to the **Selected** module list in `docs/PRD.md`. Phase 1 creates folders and shell routes; business logic arrives in later phases.
 
 ---
 
@@ -166,11 +169,12 @@ Visual direction: professional, modern, clean — suitable for heavy-equipment o
 
 ---
 
-## 8. PWA readiness (Confirmed deferral of offline)
+## 8. Responsive PWA (Selected intent; offline deferred)
 
-- Structure for future `manifest.webmanifest` and service worker.
-- Phase 1 does **not** register offline caching or background sync.
-- Avoid patterns that would block later offline (e.g. assuming always-online mutations without queue design).
+- **Intended approach:** responsive Progressive Web App suitable for field and office use.
+- Structure for future `manifest.webmanifest` and service worker when the offline phase begins.
+- Foundation / early phases do **not** register offline caching or background sync.
+- Avoid patterns that would block later offline (e.g. assuming always-online mutations without a queue design).
 
 ---
 
@@ -190,13 +194,13 @@ Phase 1 does not deploy.
 
 | Decision | Status | Notes |
 |----------|--------|-------|
-| Next.js App Router + TS strict + Tailwind + shadcn | Confirmed | Foundation |
-| Supabase for DB/Auth/Storage | Confirmed | Stubs only in Phase 1 |
-| Feature-folder modularity for 19 modules | Confirmed | |
+| Next.js App Router + TS strict + Tailwind + shadcn | Selected | Foundation |
+| Supabase for DB/Auth/Storage | Selected | Live wiring from Phase 2; no production connection in early phases |
+| Feature-folder modularity for all 19 modules | Selected | Modules are the product scope; implement per development plan |
+| Responsive PWA | Selected intent | Offline functionality deferred |
+| Recharts | Selected but not yet implemented | Add when reports/dashboard charts are built |
 | `hire_items` for potential multi-machine agreements | Proposed | Gated on Open Question #1 |
 | Soft-delete on master data | Proposed | |
-| Recharts in Phase 1 shell | Deferred | Not required for DEMO cards |
-| Offline PWA | Open / deferred | Architecture left ready |
 
 ---
 

@@ -31,9 +31,14 @@ const ICONS: Record<string, ComponentType<{ className?: string }>> = {
 type AppSidebarProps = {
   className?: string;
   onNavigate?: () => void;
+  hasLogo?: boolean;
 };
 
-export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
+export function AppSidebar({
+  className,
+  onNavigate,
+  hasLogo = false,
+}: AppSidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -44,7 +49,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
       )}
     >
       <div className="border-b border-[var(--ew-border)] px-4 py-4">
-        <CompanyMark />
+        <CompanyMark hasLogo={hasLogo} />
       </div>
       <nav className="flex-1 space-y-1 overflow-y-auto p-3" aria-label="Primary">
         {SHELL_NAV.map((item) => {
@@ -72,7 +77,7 @@ export function AppSidebar({ className, onNavigate }: AppSidebarProps) {
           );
         })}
       </nav>
-      <div className="border-t border-[var(--ew-border)] p-4 text-xs text-[var(--ew-muted)]">
+      <div className="border-t border-[var(--ew-border)] px-4 py-3 text-xs leading-snug text-[var(--ew-muted)]">
         Phase 1 shell · modules stubbed
       </div>
     </aside>

@@ -7,7 +7,13 @@ import { AppSidebar } from "@/components/layout/app-sidebar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils/cn";
 
-export function AppShell({ children }: { children: React.ReactNode }) {
+export function AppShell({
+  children,
+  hasLogo = false,
+}: {
+  children: React.ReactNode;
+  hasLogo?: boolean;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
@@ -22,10 +28,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen bg-[var(--ew-background)] text-[var(--ew-black)]">
       <div className="hidden md:fixed md:inset-y-0 md:flex md:w-64">
-        <AppSidebar />
+        <AppSidebar hasLogo={hasLogo} />
       </div>
 
-      {/* Mobile nav drawer */}
       <div
         className={cn(
           "fixed inset-0 z-40 md:hidden",
@@ -49,6 +54,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           )}
         >
           <AppSidebar
+            hasLogo={hasLogo}
             className="shadow-xl"
             onNavigate={() => setMobileOpen(false)}
           />
@@ -66,7 +72,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col md:pl-64">
-        <AppHeader onOpenMobileNav={() => setMobileOpen(true)} />
+        <AppHeader
+          hasLogo={hasLogo}
+          onOpenMobileNav={() => setMobileOpen(true)}
+        />
         <main className="flex-1 px-4 py-6 md:px-6">{children}</main>
       </div>
     </div>

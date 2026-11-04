@@ -6,10 +6,11 @@ Heavy Equipment Hiring Management System for **EW Machine Hire**.
 |---|---|
 | **Production URL** | https://machinehire.ew.com.zm |
 | **Contact** | machinehire@ew.com.zm |
-| **Stack** | Next.js (App Router), TypeScript (strict), Tailwind CSS, shadcn/ui, Supabase, Zod, React Hook Form, Lucide |
-| **Status** | Phase 1 — foundation & documentation |
+| **Stack (Selected)** | Next.js (App Router), TypeScript (strict), Tailwind CSS, shadcn/ui, Supabase, Zod, React Hook Form, Lucide, Recharts (**selected but not yet implemented**) |
+| **Platform** | Responsive PWA intended; offline deferred |
+| **Status** | Phase 1 foundation; Phase 2 auth/RBAC follows |
 
-Documentation distinguishes **Confirmed**, **Proposed**, and **Open** requirements. Do not invent business rules — see `docs/OPEN_QUESTIONS.md`.
+Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Open**. Do not invent business rules — see `docs/OPEN_QUESTIONS.md`. The 19 modules and stack are **selected** project direction.
 
 ---
 

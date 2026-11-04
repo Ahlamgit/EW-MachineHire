@@ -1,6 +1,13 @@
 # EW Machine Hire — Business Rules
 
-**Status legend:** **Confirmed** | **Proposed** | **Open**
+**Status legend**
+
+| Label | Meaning |
+|-------|---------|
+| **Selected** | Chosen project direction (stack, modules, intended platform approach) |
+| **Confirmed** | Stakeholder-approved business rule — implement as stated |
+| **Proposed** | Engineering recommendation pending confirmation |
+| **Open** | Unresolved — do not invent an answer in code |
 
 Do not invent rules. Unresolved items belong in `docs/OPEN_QUESTIONS.md` and must not be silently “resolved” in code.
 
@@ -8,41 +15,67 @@ Do not invent rules. Unresolved items belong in `docs/OPEN_QUESTIONS.md` and mus
 
 ## 1. Compliance (Confirmed)
 
-1. Compliance records must retain their **actual document dates** and expiry-related information.
-2. Status calculation bands (based on age / elapsed period from document context as defined by stakeholders):
-   - **Green:** less than 9 months
-   - **Yellow:** 9 months or more, but less than 10 months
-   - **Red:** 10 months or more
-3. **Missing** required compliance documents must be clearly identified in the UI and hiring checks.
-4. Do **not** calculate compliance using invented dates or assumptions.
+### 1.1 Document types sharing the renewal cycle
 
-### Open (compliance)
+**Insurance**, **fitness**, and **road tracks** use the **same renewal cycle** and the same status bands below.
 
-- Exact definition of “road tracks” in compliance requirements — see `OPEN_QUESTIONS.md`.
-- Behaviour when compliance expires **during** an active hire — see `OPEN_QUESTIONS.md`.
+> **Open (definition only):** What “road tracks” means as a document/artefact is still Open (see `docs/OPEN_QUESTIONS.md` Q3). The shared cycle and status bands are Confirmed regardless.
+
+### 1.2 Actual document Date (not entry time)
+
+Status must be calculated from each compliance record’s **actual document Date** (the date on / for the document), **not** from the application’s record-creation / entry timestamp.
+
+### 1.3 Status bands (from the document Date)
+
+| Status | Age from document Date |
+|--------|-------------------------|
+| **Green** | Under 9 months |
+| **Yellow** | From 9 months up to **under** 10 months |
+| **Red** | From 10 months **onward**, including 11 months and beyond |
+
+### 1.4 Missing documents
+
+Required compliance documents that are absent must be clearly identified as **missing** in the UI and in hiring eligibility checks.
+
+### 1.5 Renewal behaviour
+
+- A **renewal** creates / records a new document Date for **that** compliance document only.
+- Status is **recalculated only for that document** from its **new** Date.
+- **Preserve all previous compliance records** (append-only history — do not overwrite or delete prior documents when renewing).
+
+### 1.6 Do not invent dates
+
+Do **not** calculate compliance using invented dates or assumptions.
+
+### Open (compliance — process)
+
+- Behaviour when compliance expires (or turns yellow/red) **during** an active hire — see `OPEN_QUESTIONS.md` Q5.
 
 ---
 
 ## 2. Hiring restrictions (Confirmed)
 
-A machine **cannot** be hired if any of the following are true:
+A machine **cannot** be hired (new hire) if any of the following are true:
 
 1. It is **already hired**.
-2. It is **undergoing fixing or repair**.
+2. It is undergoing **any fixing**, including:
+   - routine **service**, and/or
+   - **breakdown repair**, and/or
+   - other repair / fixing work that takes the machine out of hire-ready state.
 3. Any **required** compliance status is **missing**, **yellow**, or **red**.
 
 Additional Confirmed rules:
 
 4. Prevent two users from hiring the same machine simultaneously — enforce at the **database level** where appropriate (constraints / transactional checks), not only in the frontend.
-5. A hire must have an **explicit closure** process (no silent or implicit end without a recorded closure event).
+5. **Manual / explicit closure** is required for **every** hire, including **fixed-duration** hires. Do not auto-close a hire solely because an end date/time has passed; closure must be an explicit recorded action.
 6. Preserve the **full hiring history** for every machine.
 
 ### Open (hiring)
 
-- Whether one hire agreement may contain **multiple machines** — **do not assume** until confirmed.
-- Whether hiring hours are based on **operating hours** or **elapsed time**.
-- Billing / invoicing / deposits / customer balances — not confirmed in scope.
-- Operator assignment model (machine vs hire agreement).
+- Whether one hire agreement may contain **multiple machines** — **do not assume** until confirmed (Q1).
+- Whether hiring hours are based on **operating hours** or **elapsed time** (Q4).
+- Billing / invoicing / deposits / customer balances — not confirmed in product scope (Q9).
+- Operator assignment model (machine vs hire agreement) (Q7).
 
 ---
 
@@ -73,6 +106,8 @@ The system must be able to represent:
 - Monthly
 - Open-ended
 
+Fixed-duration designs still require **manual closure** (see §2.5).
+
 **Open:** Exact billing and time-calculation rules (pro-rata, overtime, minimum periods, etc.). Do not hard-code unconfirmed pricing logic.
 
 ---
@@ -87,47 +122,49 @@ Confirmed capability areas:
 - Repairs
 - Spare parts used on jobs
 
-**Open:** Exact maintenance scheduling thresholds (hours/km/calendar). Keep thresholds **configurable** in settings rather than hard-coded constants until approved.
+**Confirmed hire interaction:** While a machine is in fixing / service / repair (see §2.2), it is **not** available for a new hire.
+
+**Open:** Exact maintenance scheduling thresholds (hours/km/calendar). Keep thresholds **configurable** in settings rather than hard-coded constants until approved (Q6).
 
 ---
 
-## 6. Units and currencies (Confirmed)
+## 6. Units and currencies (Confirmed principle)
 
 1. Do **not** combine values of different units without an **explicit conversion** step recorded in the system.
 2. Preserve **original values and units** on stored records.
-3. **Open:** Which currencies and measurement units are required for production (ZMW assumed Proposed for Zambia ops; confirm).
+3. **Open:** Which currencies and measurement units are required for production (Q11).
 
 ---
 
-## 7. Spare parts (Proposed scope / Open inventory)
+## 7. Spare parts (Selected module / Open inventory depth)
 
-- Recording spare parts used against a machine/job is in the module list (**Confirmed** as a module).
-- Whether full **inventory / stock control** (on-hand qty, reorder, warehouses) is required is **Open**.
-
----
-
-## 8. Branches, sites, and access (Proposed / Open)
-
-- Branches, sites, and locations are a Confirmed module.
-- Whether multiple branches require **restricted access** (data isolation by branch) is **Open**.
+- Spare parts management is a **Selected** product module.
+- Whether full **inventory / stock control** (on-hand qty, reorder, warehouses) is required is **Open** (Q2).
 
 ---
 
-## 9. Notifications (Proposed / Open)
+## 8. Branches, sites, and access (Selected module / Open ACL)
 
-- In-app notifications and alerts are a Confirmed module.
-- Whether **email** notifications are required is **Open**.
+- Branches, sites, and locations are a **Selected** module.
+- Whether multiple branches require **restricted access** (data isolation by branch) is **Open** (Q10). Do **not** assume branch restrictions in Phase 2 auth.
 
 ---
 
-## 10. Data integrity principles (Proposed — align with Confirmed history rules)
+## 9. Notifications (Selected module / Open email)
+
+- In-app notifications and alerts are a **Selected** module.
+- Whether **email** notifications are required is **Open** (Q13).
+
+---
+
+## 10. Data integrity principles
 
 | Principle | Status |
 |-----------|--------|
-| UUID primary keys | Confirmed (technical) |
-| Foreign keys for relationships | Confirmed (technical) |
-| Soft-delete vs hard-delete for master data | Proposed — prefer soft-delete for machines/customers; hard rules Open |
-| Demo data never mixed with production without labels | Confirmed for Phase 1 UI |
+| UUID primary keys | Selected (technical) |
+| Foreign keys for relationships | Selected (technical) |
+| Soft-delete vs hard-delete for master data | Proposed — prefer soft-delete for machines/customers |
+| Demo data never mixed with production without labels | Confirmed for foundation UI |
 
 ---
 

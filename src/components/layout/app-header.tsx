@@ -8,9 +8,10 @@ import { Button } from "@/components/ui/button";
 
 type AppHeaderProps = {
   onOpenMobileNav: () => void;
+  hasLogo?: boolean;
 };
 
-export function AppHeader({ onOpenMobileNav }: AppHeaderProps) {
+export function AppHeader({ onOpenMobileNav, hasLogo = false }: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-[var(--ew-border)] bg-[var(--ew-white)]/95 px-4 backdrop-blur md:px-6">
       <Button
@@ -25,7 +26,7 @@ export function AppHeader({ onOpenMobileNav }: AppHeaderProps) {
       </Button>
 
       <div className="md:hidden">
-        <CompanyMark compact />
+        <CompanyMark compact hasLogo={hasLogo} />
       </div>
 
       <div className="hidden min-w-0 flex-1 md:block">

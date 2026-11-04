@@ -1,3 +1,5 @@
 # Feature module: users
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Phase 2: authentication UI (`LoginForm`), sign-out server action, and users page catalogue for the **Proposed** RBAC matrix.
+
+See `docs/PERMISSIONS.md` and `docs/AUTH_SETUP.md`.

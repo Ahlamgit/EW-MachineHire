@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  EW Machine Hire design tokens (Confirmed brand colours).
+  Keep visual system consistent via these CSS variables.
+*/
+:root {
+  --ew-black: #17191c;
+  --ew-blue: #1769b0;
+  --ew-blue-hover: #145a96;
+  --ew-blue-soft: #e8f2fa;
+  --ew-green: #65a52d;
+  --ew-green-soft: #eef6e6;
+  --ew-yellow: #e5b900;
+  --ew-yellow-soft: #fff8db;
+  --ew-background: #f5f6f8;
+  --ew-white: #ffffff;
+  --ew-muted: #5c6570;
+  --ew-border: #d8dde3;
+  --ew-danger: #b42318;
+  --ew-danger-soft: #fef3f2;
+  --ew-danger-border: #fecdca;
+
+  --background: var(--ew-background);
+  --foreground: var(--ew-black);
+  --card: var(--ew-white);
+  --card-foreground: var(--ew-black);
+  --primary: var(--ew-blue);
+  --primary-foreground: var(--ew-white);
+  --secondary: var(--ew-black);
+  --secondary-foreground: var(--ew-white);
+  --muted: var(--ew-background);
+  --muted-foreground: var(--ew-muted);
+  --accent: var(--ew-green);
+  --accent-foreground: var(--ew-white);
+  --border: var(--ew-border);
+  --ring: var(--ew-blue);
+  --radius: 0.5rem;
+}
+
+@layer base {
+  * {
+    @apply border-[var(--ew-border)];
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen bg-[var(--ew-background)] text-[var(--ew-black)] antialiased;
+    font-family:
+      "Segoe UI",
+      "Helvetica Neue",
+      Helvetica,
+      Arial,
+      sans-serif;
+  }
+
+  a {
+    @apply text-inherit no-underline;
+  }
+}

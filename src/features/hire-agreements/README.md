@@ -1,3 +1,3 @@
-# Feature module: hire-agreements
+# Feature module: hire agreements
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Single-machine hire agreements (multi-machine Open). Draft → explicit activate → explicit close. DB enforces compliance/fixing/active-hire restrictions. No billing fields.

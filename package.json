@@ -9,6 +9,8 @@
     "lint": "next lint",
     "check:supabase-env": "node scripts/check-supabase-env.mjs",
     "check:migrations": "node scripts/check-migrations.mjs",
+    "test:compliance-bands": "node scripts/test-compliance-bands.mjs",
+    "test:core-workflow-sql": "node scripts/test-core-workflow-sql.mjs",
     "smoke:auth": "node scripts/smoke-auth.mjs",
     "capacity:seed": "node scripts/seed-capacity-demo.mjs",
     "capacity:measure": "node scripts/measure-usage.mjs",

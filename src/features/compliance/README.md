@@ -1,3 +1,3 @@
 # Feature module: compliance
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Append-only `compliance_records` for insurance, fitness, and road_tracks. Status bands from actual Document Date (Confirmed). Prior records preserved on renewal.

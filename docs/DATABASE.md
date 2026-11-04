@@ -182,5 +182,7 @@ Apply concretely in migrations when tables are created:
 
 - **Phase 1:** No schema applied; entity catalogue documented.
 - **Phase 2 migration:** `supabase/migrations/20261104120000_phase2_auth_rbac.sql` creates `profiles`, `roles`, `permissions`, `role_permissions`, `user_roles`, helpers, RLS, and Proposed seed data. Not applied to production from this repo automation.
-- Multi-machine hire agreement decision remains **Open** and must be confirmed before hiring migrations are finalised.
+- **Core workflow migration:** `supabase/migrations/20261104200000_core_workflow.sql` creates machines, compliance_records (append-only), customers, sites, hire_agreements (single `machine_id` — multi-machine still **Open**), hire_events, machine_fixing_jobs, Confirmed compliance band helpers, hire activation/close RPCs, partial unique index for one active hire per machine, and RLS. Apply after Phase 2.
+- Multi-machine hire agreement decision remains **Open**; this migration intentionally does **not** introduce `hire_items`.
 - Branch-scoped RLS is **not** included (Q10 Open).
+- No billing / invoicing tables (Q9 Open).

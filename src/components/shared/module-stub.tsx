@@ -15,7 +15,7 @@ export function ModuleStub({
       <div className="flex flex-wrap items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         <Badge tone="neutral">Phase {phase}+</Badge>
-        <Badge tone="yellow">DEMO scaffold — no Supabase data</Badge>
+        <Badge tone="yellow">DEMO / not ready</Badge>
       </div>
       <EmptyState
         title="Module scaffold only — not live"

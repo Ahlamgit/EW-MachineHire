@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { MachineSectionNav } from "@/components/machines/machine-section-nav";
-import { DemoBanner } from "@/components/shared/demo-banner";
 import { Badge } from "@/components/ui/badge";
-import { DEMO_MACHINES } from "@/lib/constants/demo-data";
+import { getMachine } from "@/features/machines/queries";
+import { getHireBlockers } from "@/features/hires/queries";
+
+export const dynamic = "force-dynamic";
 
 export default async function MachineDetailLayout({
   children,
@@ -13,11 +15,31 @@ export default async function MachineDetailLayout({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const machine = DEMO_MACHINES.find((item) => item.id === id);
+  const result = await getMachine(id);
 
-  if (!machine) {
+  if (result.source === "missing") {
     notFound();
   }
+
+  if (result.source === "unavailable" || !result.machine) {
+    return (
+      <div className="mx-auto max-w-3xl space-y-3">
+        <Link
+          href="/machines"
+          className="text-sm font-medium text-[var(--ew-blue)] hover:underline"
+        >
+          ← Back to machines
+        </Link>
+        <p className="rounded-md border border-[var(--ew-yellow)] bg-[var(--ew-yellow-soft)] px-3 py-2 text-sm">
+          {result.message ??
+            "Machine data unavailable. Apply core_workflow migration and sign in."}
+        </p>
+      </div>
+    );
+  }
+
+  const machine = result.machine;
+  const blockers = await getHireBlockers(machine.id);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-5">
@@ -34,15 +56,25 @@ export default async function MachineDetailLayout({
               <h1 className="text-2xl font-bold tracking-tight">
                 {machine.name}
               </h1>
-              <Badge tone="yellow">DEMO</Badge>
+              <Badge tone="green">Live Supabase</Badge>
             </div>
             <p className="text-sm text-[var(--ew-muted)]">
-              {machine.code} · {machine.type} · {machine.status} ·{" "}
-              {machine.branch}
+              {machine.code}
+              {machine.machine_types?.label
+                ? ` · ${machine.machine_types.label}`
+                : ""}
+              {machine.branches?.name ? ` · ${machine.branches.name}` : ""}
             </p>
+            {blockers.source === "supabase" ? (
+              <p className="mt-1 text-xs text-[var(--ew-muted)]">
+                Hire blockers:{" "}
+                {blockers.blockers.length
+                  ? blockers.blockers.join(", ")
+                  : "none (eligible if permissions allow)"}
+              </p>
+            ) : null}
           </div>
         </div>
-        <DemoBanner />
         <MachineSectionNav machineId={machine.id} />
       </div>
       {children}

@@ -32,6 +32,7 @@ const details = files.map((name) => {
 });
 
 const phase2 = files.find((f) => f.includes("phase2_auth_rbac"));
+const coreWorkflow = files.find((f) => f.includes("core_workflow"));
 
 const report = {
   ok: files.length > 0,
@@ -39,6 +40,8 @@ const report = {
   files: details,
   phase2AuthRbacPresent: Boolean(phase2),
   phase2File: phase2 ?? null,
+  coreWorkflowPresent: Boolean(coreWorkflow),
+  coreWorkflowFile: coreWorkflow ?? null,
   apply: [
     "npx supabase login",
     "npx supabase link --project-ref YOUR_PROJECT_REF",
@@ -49,9 +52,15 @@ const report = {
     "Create/invite admin user; insert user_roles admin — docs/AUTH_SETUP.md §4",
     "Set Auth Site URL + /auth/callback for the Netlify origin — docs/STAGING_DEPLOY.md",
     "npm run smoke:auth (optional HTTP probe against NEXT_PUBLIC_APP_URL)",
+    "npm run test:compliance-bands",
+    "CORE_WORKFLOW_DATABASE_URL=... npm run test:core-workflow-sql",
   ],
-  note: "This script does not connect to Postgres. Live apply remains a human/CLI step.",
+  note: "This script does not connect to Postgres. Live apply remains a human/CLI step. Auth remains implemented, unverified until migration + live checks.",
 };
 
 console.log(JSON.stringify(report, null, 2));
-process.exit(report.ok && report.phase2AuthRbacPresent ? 0 : 1);
+process.exit(
+  report.ok && report.phase2AuthRbacPresent && report.coreWorkflowPresent
+    ? 0
+    : 1,
+);

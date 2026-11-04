@@ -1,3 +1,3 @@
 # Feature module: customers
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Minimum `customers` + `sites` for hiring. No invented billing or balances.

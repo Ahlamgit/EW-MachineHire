@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils/cn";
 
 type BadgeProps = React.HTMLAttributes<HTMLSpanElement> & {
-  tone?: "blue" | "green" | "yellow" | "black" | "neutral";
+  tone?: "blue" | "green" | "yellow" | "black" | "neutral" | "red";
 };
 
 const toneClass: Record<NonNullable<BadgeProps["tone"]>, string> = {
@@ -10,6 +10,7 @@ const toneClass: Record<NonNullable<BadgeProps["tone"]>, string> = {
   yellow: "bg-[var(--ew-yellow-soft)] text-[var(--ew-black)]",
   black: "bg-[var(--ew-black)] text-[var(--ew-white)]",
   neutral: "bg-[var(--ew-background)] text-[var(--ew-muted)]",
+  red: "bg-[var(--ew-danger-soft)] text-[var(--ew-danger)]",
 };
 
 export function Badge({ className, tone = "neutral", ...props }: BadgeProps) {

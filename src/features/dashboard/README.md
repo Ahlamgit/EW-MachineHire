@@ -1,3 +1,3 @@
 # Feature module: dashboard
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Fleet counts and compliance/fixing alerts from saved Supabase data when `core_workflow` is applied. Auth strip remains implemented, unverified.

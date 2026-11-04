@@ -1,3 +1,3 @@
 # Feature module: maintenance
 
-Scaffold folder for the Confirmed product module. Phase 1 contains no business logic.
+Minimal `machine_fixing_jobs` (service / breakdown / repair) open + complete to exercise hire blocking. Full schedules = DEMO / not ready.

@@ -65,7 +65,7 @@ File: `supabase/migrations/20261104120000_phase2_auth_rbac.sql`
 ## 4. Enable Email auth
 
 1. Authentication → Providers → Email enabled.
-2. Configure Site URL / redirect URLs for local (`http://localhost:3000/auth/callback`) and staging.
+2. Configure Site URL / redirect URLs for local (`http://localhost:3000/auth/callback`) and staging Path A (`https://<site>.netlify.app/auth/callback`). Add branded `https://machinehire.ew.com.zm/auth/callback` only if Path B CNAME is used later.
 3. Create the first user (dashboard or invite).
 4. In SQL, ensure a `profiles` row exists (trigger on `auth.users` insert handles new users) and assign `admin`:
 
@@ -90,30 +90,41 @@ Sign in at `/login`. Protected app routes require a session when Supabase is con
 
 ## 6. Online staging deployment (non-production)
 
-Do **not** deploy to production (`https://machinehire.ew.com.zm`) from this guide.
+**Default host (Path A):** **Netlify Free** on `*.netlify.app` (**no DNS**) — exact clicks in [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md). Limits: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md). Comparison: [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md).  
+**Portable Node / Hostinger later:** [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md). Netlify/OpenNext optional: [`deploy/netlify/README.md`](../deploy/netlify/README.md).
 
-1. Choose a staging host (e.g. Vercel / similar) pointed at branch `cursor/phase-2-auth-rbac-f54e` or a dedicated staging branch based on it.
-2. Set staging environment variables (names only — paste values in the host UI, never in chat/git):
+Customer-test URL: `https://<site>.netlify.app` first. Branded `https://machinehire.ew.com.zm` is **optional later only** (CNAME-only).  
+Until go-live hardening (Phase 9), treat the host as **staging**: use a **non-production** Supabase Free project and staging env values only. Business data stays in **Supabase**, not on the web host.
+
+**Preserve:** public site `https://ew.com.zm` / `www`, nameservers, and Titan email/MX.
+
+1. Follow [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) §1 (Netlify Free Git import + env + deploy).
+2. Set staging environment variables (names only — paste values in the Netlify UI, never in chat/git):
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` (server-only; if you need admin path / future privileged jobs)
-   - `NEXT_PUBLIC_APP_URL` = your staging URL (e.g. `https://your-app-staging.example`)
+   - `NEXT_PUBLIC_APP_URL` = `https://<site>.netlify.app` (Path A)
    - Ensure `DEV_ALLOW_UNCONFIGURED_SHELL` is **unset** or `false`
-3. In Supabase Auth settings, add the staging Site URL and redirect URL:  
-   `https://YOUR_STAGING_HOST/auth/callback`
+3. In Supabase Auth settings (staging/dev project):
+   - **Site URL:** same as `NEXT_PUBLIC_APP_URL`
+   - **Redirect URL:** `<APP_URL>/auth/callback`
+   - Keep local: `http://localhost:3000/auth/callback`
+   - Prefer **custom SMTP** (existing Titan mailbox) for non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour) — exact fields and Titan limits: [`EMAIL_SMTP.md`](./EMAIL_SMTP.md). Delivery remains **UNTESTED** until staging checks in that doc pass.
 4. Confirm the Phase 2 migration is applied on the **same** development/staging Supabase project the staging app uses.
-5. Deploy the build (`npm run build` / host pipeline). Smoke-test `/login` and a protected route.
-6. Do **not** auto-merge PRs; do **not** point staging secrets at production.
+5. Deploy via Netlify Git (`npm run build`; OpenNext auto on Netlify only). Smoke-test `/login` and a protected route. Keep the Free project active (≥ weekly DB activity) to avoid inactivity pause.
+6. Do **not** auto-merge PRs; do **not** point staging secrets at a production Supabase project; do **not** purchase paid plans; do **not** change DNS for Path A.
 
 ## 7. What remains unverified without credentials on this agent VM
 
 | Check | Status without local `.env.local` on the agent |
 |-------|-----------------------------------------------|
 | Email/password sign-in | Code present — run check on coordinator `/workspace` |
+| Invite / password-reset **email delivery** (Titan SMTP) | Documented in [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) — **UNTESTED** until human staging checks |
 | Session cookie refresh (middleware) | Code present — verify where `.env.local` exists |
 | RLS policies | SQL present — verify after `db push` on the dev project |
 | Permission helper / RPC | Code present — verify after admin role assign |
 | Service-role admin path | Stub — only if `SUPABASE_SERVICE_ROLE_KEY` is set server-side |
+| Backup restore drill | Scripts in `scripts/backup/` — **UNTESTED** until [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) §7 passes |
 
 ## 8. Is `SUPABASE_SERVICE_ROLE_KEY` required?
 

@@ -15,14 +15,14 @@ export function UserMenuPlaceholder({
   roles = [],
   configured = false,
 }: UserMenuProps) {
-  const label = email ?? (configured ? "Signed out" : "Demo User");
+  const label = email ?? (configured ? "Signed out" : "Local preview");
   const subtitle = email
     ? roles.length
       ? roles.join(", ")
       : "No roles assigned"
     : configured
       ? "Sign in required"
-      : "Placeholder";
+      : "No auth session (DEV shell)";
 
   return (
     <div className="flex items-center gap-2">

@@ -15,12 +15,13 @@ export function ModuleStub({
       <div className="flex flex-wrap items-center gap-2">
         <h1 className="text-2xl font-bold tracking-tight">{title}</h1>
         <Badge tone="neutral">Phase {phase}+</Badge>
+        <Badge tone="yellow">DEMO scaffold — no Supabase data</Badge>
       </div>
       <EmptyState
-        title="Module scaffold only"
+        title="Module scaffold only — not live"
         description={
           description ??
-          "This route reserves navigation for a Confirmed product module. Business logic is intentionally not implemented in Phase 1."
+          "This route reserves navigation for a Confirmed product module. It does not read or write Supabase. Business logic arrives in the phase shown on the badge."
         }
       />
     </div>

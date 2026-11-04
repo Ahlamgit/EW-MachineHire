@@ -43,3 +43,18 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# capacity harness temp SQL (large DEMO seed)
+/scripts/capacity/.tmp-seed.sql
+
+# backups & backup credentials (never commit dumps or DB URLs)
+/backups/
+/scripts/backup/backup.env
+/scripts/backup/.secrets/
+*.dump
+*.dump.tmp
+EWM_BACKUP_ROOT/
+# local retention trees if someone points EWM_BACKUP_ROOT inside the repo
+/scripts/backup/daily/
+/scripts/backup/weekly/
+/scripts/backup/logs/

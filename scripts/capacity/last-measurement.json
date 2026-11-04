@@ -1,0 +1,84 @@
+{
+  "measuredAt": "2026-11-04T17:08:52.499Z",
+  "note": "DEMO data only. Secrets redacted. Free DB limit assumed 500 MB.",
+  "results": [
+    {
+      "label": "DEMO_CAPACITY",
+      "machineCount": 160,
+      "historyMonths": 12,
+      "attachments": "none (storage_path null)",
+      "users": 4,
+      "demoCapacityBytes": 4063232,
+      "demoCapacityPretty": "3.88 MB",
+      "databaseBytes": 12082199,
+      "databasePretty": "11.52 MB",
+      "pctOfSupabaseFree500MB": 0.775,
+      "headroomPctOf500MB": 99.225,
+      "counts": {
+        "machines": 160,
+        "profiles": 4,
+        "hire_agreements": 440,
+        "hire_items": 440,
+        "hire_events": 1240,
+        "machine_readings": 2880,
+        "fuel_events": 5760,
+        "tyre_events": 480,
+        "maintenance_records": 480,
+        "compliance_records": 640,
+        "audit_logs": 1280,
+        "customers": 40
+      },
+      "connection": "postgresql://ewm_capacity:***@127.0.0.1:5432/ewm_capacity_demo",
+      "assumptions": {
+        "closedHiresPerMachine": "2–3 over history window",
+        "activeHireShare": "~25% of fleet",
+        "readingsPerMonth": 1.5,
+        "fuelEventsPerMonth": 3,
+        "tyreEventsPerMonth": 0.25,
+        "maintenancePerMonth": 0.25,
+        "complianceDocsPerMachine": 4,
+        "auditEventsPerMachine": 8,
+        "noFileBlobs": true
+      }
+    },
+    {
+      "label": "DEMO_CAPACITY",
+      "machineCount": 200,
+      "historyMonths": 12,
+      "attachments": "none (storage_path null)",
+      "users": 4,
+      "demoCapacityBytes": 4694016,
+      "demoCapacityPretty": "4.48 MB",
+      "databaseBytes": 12934167,
+      "databasePretty": "12.33 MB",
+      "pctOfSupabaseFree500MB": 0.895,
+      "headroomPctOf500MB": 99.105,
+      "counts": {
+        "machines": 200,
+        "profiles": 4,
+        "hire_agreements": 550,
+        "hire_items": 550,
+        "hire_events": 1550,
+        "machine_readings": 3600,
+        "fuel_events": 7200,
+        "tyre_events": 600,
+        "maintenance_records": 600,
+        "compliance_records": 800,
+        "audit_logs": 1600,
+        "customers": 50
+      },
+      "connection": "postgresql://ewm_capacity:***@127.0.0.1:5432/ewm_capacity_demo",
+      "assumptions": {
+        "closedHiresPerMachine": "2–3 over history window",
+        "activeHireShare": "~25% of fleet",
+        "readingsPerMonth": 1.5,
+        "fuelEventsPerMonth": 3,
+        "tyreEventsPerMonth": 0.25,
+        "maintenancePerMonth": 0.25,
+        "complianceDocsPerMachine": 4,
+        "auditEventsPerMachine": 8,
+        "noFileBlobs": true
+      }
+    }
+  ]
+}

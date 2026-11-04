@@ -26,6 +26,16 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Decisions needing approval |
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Proposed RBAC matrix (Phase 2) |
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
+| [`docs/PREFERENCES.md`](docs/PREFERENCES.md) | Stakeholder preferences (zero ongoing app service fees) |
+| [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md) | Netlify Free + Supabase Free limits, gaps, maintenance |
+| [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Company-PC scheduled Free-tier backup / restore drill / inactivity wake |
+| [`docs/EMAIL_SMTP.md`](docs/EMAIL_SMTP.md) | Titan mailbox + Supabase custom SMTP (Auth); Q13 in-app alerts first |
+| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging Path A: Netlify Free `*.netlify.app` (zero DNS) — exact user clicks |
+| [`docs/STAGING_VERIFY.md`](docs/STAGING_VERIFY.md) | Post-Netlify-connect verification checklist |
+| [`docs/LIVE_VS_DEMO.md`](docs/LIVE_VS_DEMO.md) | What is live Supabase vs DEMO placeholders |
+| [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md) | Host-agnostic `build`/`start`, env, migrations, backups, Hostinger later |
+| [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
+| [`deploy/netlify/README.md`](deploy/netlify/README.md) | Optional Netlify / OpenNext isolation (not required for Node hosts) |
 
 ---
 
@@ -57,7 +67,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and staging (non-production) deploy.
+Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and `docs/STAGING_HOSTING_OPTIONS.md` for Netlify Free customer-test staging.
 
 ### Scripts
 
@@ -67,12 +77,29 @@ Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` w
 | `npm run build` | Production build |
 | `npm run start` | Start production server |
 | `npm run lint` | ESLint |
+| `npm run check:supabase-env` | Presence-only env check (no secret values printed) |
+| `npm run check:migrations` | List committed SQL + Phase 2 apply checklist (no DB connection) |
+| `npm run smoke:auth` | Auth env presence + optional HTTP probe (`--url https://…`) |
+| `npm run capacity:seed` | Seed DEMO capacity data (160 & 200 machines) for Free-tier size measurement |
+| `npm run capacity:measure` | Report DB/headroom estimates (no secrets printed) |
+| `npm run backup:export` | Scheduled logical DB export (needs `scripts/backup/backup.env`) |
+| `npm run backup:restore-test` | Print / run separate restore-test procedure (UNTESTED until operator drill) |
 
 ### Environment
 
 Copy `.env.example` → `.env.local` and fill placeholders when a Supabase project exists. Phase 1 uses **stubs only** — no live Supabase connection is required to run the shell.
 
 **Never** put the service-role key in `NEXT_PUBLIC_*` variables or client code.
+
+### Staging (customer test)
+
+- **Preference:** zero ongoing app service fees — [`docs/PREFERENCES.md`](docs/PREFERENCES.md); limits/gaps — [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md).
+- **Path A (default):** **Netlify Free** + Supabase Free on `*.netlify.app` (**zero DNS**). Exact clicks: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
+- **Portable Node:** always `npm run build` + `npm run start` — [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md). Netlify/OpenNext is optional ([`deploy/netlify/README.md`](deploy/netlify/README.md)).
+- **Business data:** Supabase only — not hosting-local files.
+- **Optional branded URL later:** `https://machinehire.ew.com.zm` via **CNAME only** (Path B). Hostinger Node support = separate later verification; app hosting vs DB/auth = separate decisions.
+- **Do not** change root, www, nameservers, or Titan email/MX. Do not purchase for this preference.
+- Vercel Hobby is **non-commercial**; Pro unapproved — deferred. Comparison: [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
 
 ---
 
@@ -96,7 +123,7 @@ supabase/migrations  SQL migrations (none applied yet)
 
 **Phase 2:** auth routes, middleware session protection, Proposed RBAC schema + RLS SQL, permission helpers, users page catalogue. Live auth/RLS verification requires your Supabase project (`docs/AUTH_SETUP.md`).
 
-Not included yet: real machine/customer/hire modules, finance, branch ACL, deployment, offline PWA.
+Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging: `docs/STAGING_DEPLOY.md` + `docs/PORTABLE_HOSTING.md` + `docs/FREE_TIER_CONSTRAINTS.md`.
 
 ---
 

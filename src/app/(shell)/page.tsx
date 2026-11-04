@@ -4,11 +4,17 @@ import { DemoBanner } from "@/components/shared/demo-banner";
 import { EmptyState } from "@/components/shared/state-panels";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { getAuthContext } from "@/lib/auth/session";
+import { getRbacCatalogue } from "@/lib/auth/rbac-catalogue";
 import { DEMO_MACHINES } from "@/lib/constants/demo-data";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-export default function DashboardPage() {
+export const dynamic = "force-dynamic";
+
+export default async function DashboardPage() {
   const supabaseReady = isSupabaseConfigured();
+  const auth = await getAuthContext();
+  const catalogue = await getRbacCatalogue();
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col gap-6">
@@ -18,13 +24,62 @@ export default function DashboardPage() {
             Dashboard
           </h1>
           <p className="text-sm text-[var(--ew-muted)]">
-            Phase 1 foundation shell with DEMO sample cards only.
+            Auth/session can be live (Phase 2). Fleet figures below are DEMO
+            placeholders until Phase 3+.
           </p>
         </div>
-        <Badge tone={supabaseReady ? "green" : "neutral"}>
-          {supabaseReady ? "Supabase env detected" : "Supabase stubs (not connected)"}
-        </Badge>
+        <div className="flex flex-wrap gap-2">
+          <Badge tone={supabaseReady ? "green" : "neutral"}>
+            {supabaseReady
+              ? "Auth env configured"
+              : "Auth env not connected"}
+          </Badge>
+          <Badge tone="yellow">Fleet DEMO</Badge>
+        </div>
       </div>
+
+      <Card>
+        <CardHeader>
+          <div className="flex flex-wrap items-center justify-between gap-2">
+            <CardTitle>Session &amp; RBAC status</CardTitle>
+            <Badge tone={catalogue.source === "supabase" ? "green" : "neutral"}>
+              {catalogue.source === "supabase" ? "Live Supabase" : "Not live"}
+            </Badge>
+          </div>
+        </CardHeader>
+        <CardContent className="space-y-2 text-sm text-[var(--ew-muted)]">
+          <p>
+            Signed in:{" "}
+            <strong className="text-[var(--ew-black)]">
+              {auth.email ?? "—"}
+            </strong>
+          </p>
+          <p>
+            Roles:{" "}
+            <strong className="text-[var(--ew-black)]">
+              {auth.roles.length ? auth.roles.join(", ") : "none"}
+            </strong>
+            {" · "}
+            Permissions:{" "}
+            <strong className="text-[var(--ew-black)]">
+              {auth.permissions.length}
+            </strong>
+          </p>
+          <p>
+            DB catalogue:{" "}
+            <strong className="text-[var(--ew-black)]">
+              {catalogue.source === "supabase"
+                ? `${catalogue.roleCount ?? 0} roles · ${catalogue.permissionCount ?? 0} permissions · ${catalogue.profileCount ?? "—"} profiles`
+                : catalogue.message}
+            </strong>
+          </p>
+          <p className="text-xs">
+            Machines, compliance, and hire modules do{" "}
+            <strong className="text-[var(--ew-black)]">not</strong> read
+            Supabase yet — see DEMO sections below.
+          </p>
+        </CardContent>
+      </Card>
 
       <DemoBanner />
       <DemoStatCards />
@@ -34,7 +89,7 @@ export default function DashboardPage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <CardTitle>DEMO machine snapshot</CardTitle>
-              <Badge tone="yellow">DEMO</Badge>
+              <Badge tone="yellow">DEMO — not Supabase</Badge>
             </div>
           </CardHeader>
           <CardContent>

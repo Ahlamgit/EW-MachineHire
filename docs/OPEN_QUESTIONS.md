@@ -80,7 +80,9 @@ Do not silently resolve these in application logic. When answered, move the deci
 ### Q12. Expected scale?
 
 **Question:** What is the expected number of machines and users (order of magnitude)?  
-**Impact:** Indexing, caching, pagination, hosting sizing — not a Phase 1 blocker.
+**Impact:** Indexing, caching, pagination, hosting sizing — not a Phase 1 blocker.  
+**Free-tier note (2026-11-04):** Zero ongoing fees preference means production hosting fit depends on this answer. Bounded assumptions and gaps are recorded in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) until Q12 is Confirmed.  
+**Working assessment (2026-11-04, not yet Confirmed):** **4 users**, **>150 machines** (measure bounds 160–200), **no attachments initially**. Local DEMO harness + headroom notes in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) §9. Replace with Confirmed figures when stakeholders lock scale.
 
 ---
 
@@ -89,7 +91,9 @@ Do not silently resolve these in application logic. When answered, move the deci
 ### Q13. Email notifications?
 
 **Question:** Are email notifications required (compliance expiry, hire events, maintenance due), or in-app only for v1?  
-**Impact:** Provider choice, templates, notification_settings, privacy.
+**Impact:** Provider choice, templates, notification_settings, privacy.  
+**Free-tier note (2026-11-04):** Paid notification SaaS conflicts with zero ongoing fees ([`PREFERENCES.md`](./PREFERENCES.md)). Prefer in-app or existing company SMTP; see [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).  
+**Working posture (2026-11-04, not Confirmed):** Operational alerts stay **in-app** initially; email alerts remain **optional**. Auth invite/reset mail uses existing **Titan** via Supabase custom SMTP (no new fees) — procedure in [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) (**UNTESTED** until staging checks pass).
 
 ---
 

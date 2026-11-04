@@ -1,14 +1,17 @@
 # Staging deployment prep (customer test)
 
-**Status:** Ready for human DNS + Vercel account steps. No production secrets in git. Do **not** merge until reviewed. Do **not** change root/www DNS, nameservers, or email/MX.
+**Status:** Ready for human DNS + host account steps. No production secrets in git. Do **not** merge until reviewed. Do **not** change root/www DNS, nameservers, or email/MX.
+
+> **Hosting decision update (2026-11-04):** Independent assessment in [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md). Company site is **Hostinger LiteSpeed shared** (not suitable for this Next.js app as-is). **Vercel Hobby is non-commercial-only** — with no paid Pro approval, prefer **Netlify Free** (or Render Free) for customer testing. This file remains the Vercel-shaped runbook if Pro is later approved.
 
 | Item | Value |
 |------|--------|
-| **Intended app URL** | `https://machinehire.ew.com.zm` |
+| **Intended app URL** | `https://machinehire.ew.com.zm` (optional; or host `*.netlify.app` first) |
 | **Public company site (preserve)** | `https://ew.com.zm` (root/www) |
 | **Email (preserve)** | Titan MX on apex — do not touch MX/nameservers |
 | **App branch for staging** | `cursor/phase-2-auth-rbac-f54e` (Phase 2) or a branch based on it |
-| **Selected host** | **Vercel** (Next.js App Router native) |
+| **Selected host (default now)** | **Netlify Free** — see [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) |
+| **Selected host (if Pro approved)** | **Vercel** (Next.js App Router native) — steps below |
 | **Repo** | `Ahlamgit/EW-MachineHire` |
 
 ---
@@ -32,15 +35,14 @@ Probed on **2026-11-04** from the Cloud Agent environment:
 
 ---
 
-## 2. Why Vercel for staging
+## 2. Why Vercel *if* Pro is approved
 
-- This app is **Next.js App Router** (`next` 15) — Vercel is the default production host for that stack (zero custom server config).
+- This app is **Next.js App Router** (`next` 15) — Vercel is the native production host (zero custom server config).
 - First-party GitHub integration with preview + production environments.
 - Edge/middleware and Server Components work without adapters.
 - Custom subdomain via **CNAME only** — preserves existing apex website + Titan email.
-- Free Hobby tier is enough for a customer staging smoke test.
 
-Alternatives (not selected for this prep): Netlify / Cloudflare Pages need more Next.js adapter care; a VPS would require Node process + TLS ops for no staging benefit.
+**Hobby caveat:** Vercel Fair Use restricts Hobby to **non-commercial personal** use. A paid consultant / company customer-test deployment is commercial → needs **Pro** (not approved). Until then use **Netlify Free** per [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md).
 
 ---
 

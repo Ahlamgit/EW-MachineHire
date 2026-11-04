@@ -26,7 +26,8 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Decisions needing approval |
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Proposed RBAC matrix (Phase 2) |
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
-| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging host (Vercel), DNS CNAME, env + auth callback checklist |
+| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging runbook (Vercel-shaped); see hosting options for Hobby caveat |
+| [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
 
 ---
 
@@ -78,10 +79,10 @@ Copy `.env.example` → `.env.local` and fill placeholders when a Supabase proje
 
 ### Staging (customer test)
 
-- **URL:** `https://machinehire.ew.com.zm` (subdomain was unused / NXDOMAIN at last probe — see staging doc).
-- **Host:** Vercel + GitHub `Ahlamgit/EW-MachineHire` (Phase 2 branch or based-on branch).
-- **DNS:** add only a `machinehire` **CNAME** to the target Vercel shows. Do **not** change root, www, nameservers, or email/MX.
-- Details: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
+- **Recommended (no paid Vercel Pro):** **Netlify Free** — start on `*.netlify.app` (zero DNS). See [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
+- **Optional branded URL later:** `https://machinehire.ew.com.zm` via **CNAME only** (subdomain was NXDOMAIN at last probe).
+- **Do not** change root, www, nameservers, or Titan email/MX.
+- Vercel Hobby is **non-commercial** under Vercel fair use; Pro is unpaid/unapproved — treat as deferred. Older click-path: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
 
 ---
 

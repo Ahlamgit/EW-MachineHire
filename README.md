@@ -52,11 +52,12 @@ cd EW-MachineHire
 npm install
 cp .env.example .env.local
 # For shell preview without Supabase: keep DEV_ALLOW_UNCONFIGURED_SHELL=true
-# For real auth: fill Supabase URL/anon key and follow docs/AUTH_SETUP.md
+# For real auth: fill Supabase URL + anon OR publishable client key (see .env.example)
+# Presence-only check (prints no secrets): npm run check:supabase-env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured.
+Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and staging (non-production) deploy.
 
 ### Scripts
 

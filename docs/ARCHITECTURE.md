@@ -129,7 +129,7 @@ Feature modules map 1:1 to the **Selected** module list in `docs/PRD.md`. Phase 
 
 - Secrets only via environment variables (see `.env.example` for **placeholder names**).
 - **Never** expose `SUPABASE_SERVICE_ROLE_KEY` (or any service-role credential) to the client bundle.
-- Browser may receive only `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
+- Browser may receive only `NEXT_PUBLIC_SUPABASE_URL` and the public client key (`NEXT_PUBLIC_SUPABASE_ANON_KEY` or alias `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`).
 - No hardcoded credentials in source control.
 
 ### 5.9 Concurrent hire protection

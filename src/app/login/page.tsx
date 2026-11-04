@@ -58,9 +58,13 @@ export default async function LoginPage({
           <div className="space-y-3 text-sm text-[var(--ew-muted)]">
             <p>
               Live sign-in is unavailable until{" "}
-              <code className="text-xs">NEXT_PUBLIC_SUPABASE_URL</code> and{" "}
-              <code className="text-xs">NEXT_PUBLIC_SUPABASE_ANON_KEY</code>{" "}
-              are set (see <code className="text-xs">.env.example</code>).
+              <code className="text-xs">NEXT_PUBLIC_SUPABASE_URL</code> and a
+              client key (
+              <code className="text-xs">NEXT_PUBLIC_SUPABASE_ANON_KEY</code> or{" "}
+              <code className="text-xs">
+                NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
+              </code>
+              ) are set (see <code className="text-xs">.env.example</code>).
             </p>
             {bypass ? (
               <p>

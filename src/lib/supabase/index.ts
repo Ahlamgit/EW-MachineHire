@@ -3,6 +3,8 @@ export {
   getSupabaseServerEnv,
   isSupabaseConfigured,
   allowUnconfiguredShell,
+  resolveSupabaseClientKey,
+  getSupabaseConfigPresence,
 } from "./env";
 export { getSupabaseBrowserClient } from "./client";
 export { createSupabaseServerClient } from "./server";

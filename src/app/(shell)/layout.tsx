@@ -1,11 +1,23 @@
 import { AppShell } from "@/components/layout/app-shell";
+import { getAuthContext } from "@/lib/auth/session";
 import { isOfficialLogoPresent } from "@/lib/brand/logo";
 
-export default function ShellLayout({
+export default async function ShellLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const hasLogo = isOfficialLogoPresent();
-  return <AppShell hasLogo={hasLogo}>{children}</AppShell>;
+  const auth = await getAuthContext();
+
+  return (
+    <AppShell
+      hasLogo={hasLogo}
+      email={auth.email}
+      roles={auth.roles}
+      configured={auth.configured}
+    >
+      {children}
+    </AppShell>
+  );
 }

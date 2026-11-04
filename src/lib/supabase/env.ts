@@ -1,6 +1,6 @@
 /**
  * Environment helpers for Supabase.
- * Phase 1: placeholders only — no live connection required.
+ * Privileged keys must never use the NEXT_PUBLIC_ prefix.
  */
 
 export type SupabasePublicEnv = {
@@ -22,7 +22,6 @@ export function getSupabasePublicEnv(): SupabasePublicEnv {
 export function getSupabaseServerEnv(): SupabaseServerEnv {
   return {
     ...getSupabasePublicEnv(),
-    // Server-only — never expose via NEXT_PUBLIC_* or client imports.
     serviceRoleKey: process.env.SUPABASE_SERVICE_ROLE_KEY,
   };
 }
@@ -35,4 +34,9 @@ export function isSupabaseConfigured(): boolean {
       !url.includes("YOUR_PROJECT_REF") &&
       !anonKey.includes("YOUR_SUPABASE"),
   );
+}
+
+/** Local-only escape hatch when Supabase is not configured. Never enable in production. */
+export function allowUnconfiguredShell(): boolean {
+  return process.env.DEV_ALLOW_UNCONFIGURED_SHELL === "true";
 }

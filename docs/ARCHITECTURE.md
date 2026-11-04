@@ -86,15 +86,17 @@ Feature modules map 1:1 to the **Selected** module list in `docs/PRD.md`. Phase 
 
 ### 5.1 Authentication
 
-- Use Supabase Auth (email/password and/or SSO as later decided — provider mix **Open**).
-- Session handled via official Supabase SSR patterns (Proposed: `@supabase/ssr` in Phase 2).
-- Unauthenticated users cannot access application routes behind the shell.
+- Use Supabase Auth (email/password first; SSO later is **Open**).
+- Session handled via `@supabase/ssr` (browser client, server client, middleware refresh) — **Selected** and implemented in Phase 2 code.
+- When configured, unauthenticated users are redirected to `/login`.
+- When not configured, `/login` shows setup guidance; `DEV_ALLOW_UNCONFIGURED_SHELL` may unlock the shell for local preview only (never production).
 
 ### 5.2 RBAC
 
-- Roles and permissions stored in Postgres (`roles`, `permissions`, `user_roles`, … — Proposed schema).
+- Roles and permissions stored in Postgres (`roles`, `permissions`, `role_permissions`, `user_roles`, `profiles`) — Phase 2 migration.
+- **Proposed** minimum matrix documented in `docs/PERMISSIONS.md` (finance permissions reserved/unassigned; no branch ACL assumed).
 - Authorization checks on the **server** for mutations; UI hiding is never the only control.
-- Final role matrix is **Open** until Phase 2 stakeholder sign-off.
+- Final role matrix remains **Open** for stakeholder sign-off.
 
 ### 5.3 Row Level Security (RLS)
 

@@ -10,9 +10,15 @@ import { cn } from "@/lib/utils/cn";
 export function AppShell({
   children,
   hasLogo = false,
+  email = null,
+  roles = [],
+  configured = false,
 }: {
   children: React.ReactNode;
   hasLogo?: boolean;
+  email?: string | null;
+  roles?: string[];
+  configured?: boolean;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -74,6 +80,9 @@ export function AppShell({
       <div className="flex min-w-0 flex-1 flex-col md:pl-64">
         <AppHeader
           hasLogo={hasLogo}
+          email={email}
+          roles={roles}
+          configured={configured}
           onOpenMobileNav={() => setMobileOpen(true)}
         />
         <main className="flex-1 px-4 py-6 md:px-6">{children}</main>

@@ -2,6 +2,7 @@ export {
   getSupabasePublicEnv,
   getSupabaseServerEnv,
   isSupabaseConfigured,
+  allowUnconfiguredShell,
 } from "./env";
 export { getSupabaseBrowserClient } from "./client";
 export { createSupabaseServerClient } from "./server";

@@ -1,0 +1,18 @@
+# Netlify Free staging / deploy config for EW Machine Hire (Next.js 15 App Router).
+# OpenNext adapter is applied automatically by Netlify for Next.js 13.5+.
+# Do NOT pin [[plugins]] package = "@netlify/plugin-nextjs" unless debugging a
+# specific adapter version — pinning opts out of automatic OpenNext updates.
+#
+# Stay on Netlify Free (hard credit limit, no auto-recharge). Prefer Deploy
+# Previews / branch deploys over frequent production publishes (15 credits each).
+# See docs/FREE_TIER_CONSTRAINTS.md and docs/STAGING_HOSTING_OPTIONS.md.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Next.js framework detection + OpenNext handle SSR, middleware (Edge),
+# route handlers, and Server Actions. No static `out/` export.

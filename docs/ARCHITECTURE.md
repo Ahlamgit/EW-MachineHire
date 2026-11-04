@@ -185,10 +185,12 @@ Visual direction: professional, modern, clean — suitable for heavy-equipment o
 | Environment | Purpose |
 |-------------|---------|
 | Local | Developer `.env.local` + optional local Supabase |
-| Staging | Non-production Supabase project |
-| Production | `https://machinehire.ew.com.zm` |
+| Staging | Non-production Supabase Free project + Netlify Free (`*.netlify.app` first) |
+| Production | `https://machinehire.ew.com.zm` (hosting must respect zero ongoing fees — see below) |
 
 Phase 1 does not deploy.
+
+**Cost constraint (Confirmed preference, 2026-11-04):** Zero ongoing service fees for the new app (hosting, DB, auth, storage, bandwidth, notifications, supporting services). Existing website/domain/email fees are out of scope. Details: [`PREFERENCES.md`](./PREFERENCES.md), [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md). Do not treat paid Vercel Pro / Supabase Pro / trials as the long-term path without a new stakeholder decision.
 
 ---
 
@@ -198,6 +200,8 @@ Phase 1 does not deploy.
 |----------|--------|-------|
 | Next.js App Router + TS strict + Tailwind + shadcn | Selected | Foundation |
 | Supabase for DB/Auth/Storage | Selected | Live wiring from Phase 2; no production connection in early phases |
+| Zero ongoing app service fees | Confirmed preference | Prefer free tiers that pause/restrict over charge; see `PREFERENCES.md` / `FREE_TIER_CONSTRAINTS.md` |
+| Netlify Free for staging (OpenNext) | Proposed staging host | `netlify.toml` on staging-prep branch; commercial Free OK; production fit gated on free-tier gaps |
 | Feature-folder modularity for all 19 modules | Selected | Modules are the product scope; implement per development plan |
 | Responsive PWA | Selected intent | Offline functionality deferred |
 | Recharts | Selected but not yet implemented | Add when reports/dashboard charts are built |

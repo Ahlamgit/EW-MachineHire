@@ -26,6 +26,8 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/OPEN_QUESTIONS.md`](docs/OPEN_QUESTIONS.md) | Decisions needing approval |
 | [`docs/PERMISSIONS.md`](docs/PERMISSIONS.md) | Proposed RBAC matrix (Phase 2) |
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
+| [`docs/PREFERENCES.md`](docs/PREFERENCES.md) | Stakeholder preferences (zero ongoing app service fees) |
+| [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md) | Netlify Free + Supabase Free limits, gaps, maintenance |
 | [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging runbook (Vercel-shaped); see hosting options for Hobby caveat |
 | [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
 
@@ -59,7 +61,7 @@ cp .env.example .env.local
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and `docs/STAGING_DEPLOY.md` for customer-test staging on Vercel.
+Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` when Supabase is configured. Follow `docs/AUTH_SETUP.md` for migrations and `docs/STAGING_HOSTING_OPTIONS.md` for Netlify Free customer-test staging.
 
 ### Scripts
 
@@ -79,10 +81,12 @@ Copy `.env.example` → `.env.local` and fill placeholders when a Supabase proje
 
 ### Staging (customer test)
 
-- **Recommended (no paid Vercel Pro):** **Netlify Free** — start on `*.netlify.app` (zero DNS). See [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
+- **Preference:** zero ongoing app service fees — [`docs/PREFERENCES.md`](docs/PREFERENCES.md); limits/gaps — [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md).
+- **Recommended (no paid Vercel Pro):** **Netlify Free** + Supabase Free — start on `*.netlify.app` (zero DNS). `netlify.toml` is on the staging-prep branch. Steps: [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
 - **Optional branded URL later:** `https://machinehire.ew.com.zm` via **CNAME only** (subdomain was NXDOMAIN at last probe).
 - **Do not** change root, www, nameservers, or Titan email/MX.
 - Vercel Hobby is **non-commercial** under Vercel fair use; Pro is unpaid/unapproved — treat as deferred. Older click-path: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
+- **Honest prod note:** Free tiers are suitable for staging; ongoing company production has documented gaps (storage, inactivity pause, credits, Auth SMTP).
 
 ---
 
@@ -106,7 +110,7 @@ supabase/migrations  SQL migrations (none applied yet)
 
 **Phase 2:** auth routes, middleware session protection, Proposed RBAC schema + RLS SQL, permission helpers, users page catalogue. Live auth/RLS verification requires your Supabase project (`docs/AUTH_SETUP.md`).
 
-Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging deploy prep is documented in `docs/STAGING_DEPLOY.md`.
+Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging deploy prep: `docs/STAGING_HOSTING_OPTIONS.md` + `docs/FREE_TIER_CONSTRAINTS.md` (Vercel-shaped: `docs/STAGING_DEPLOY.md`).
 
 ---
 

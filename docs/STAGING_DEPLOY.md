@@ -2,7 +2,8 @@
 
 **Status:** Ready for human DNS + host account steps. No production secrets in git. Do **not** merge until reviewed. Do **not** change root/www DNS, nameservers, or email/MX.
 
-> **Hosting decision update (2026-11-04):** Independent assessment in [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md). Company site is **Hostinger LiteSpeed shared** (not suitable for this Next.js app as-is). **Vercel Hobby is non-commercial-only** — with no paid Pro approval, prefer **Netlify Free** (or Render Free) for customer testing. This file remains the Vercel-shaped runbook if Pro is later approved.
+> **Hosting decision update (2026-11-04):** Independent assessment in [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md). Company site is **Hostinger LiteSpeed shared** (not suitable for this Next.js app as-is). **Vercel Hobby is non-commercial-only** — with no paid Pro approval, prefer **Netlify Free** (or Render Free) for customer testing. This file remains the Vercel-shaped runbook if Pro is later approved.  
+> **Zero ongoing fees** ([`PREFERENCES.md`](./PREFERENCES.md)): Netlify Free + Supabase Free limits, stop-vs-charge behaviour, and honest production gaps are in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md). Staging branch includes `netlify.toml` (OpenNext auto).
 
 | Item | Value |
 |------|--------|

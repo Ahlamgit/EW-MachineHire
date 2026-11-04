@@ -80,7 +80,8 @@ Do not silently resolve these in application logic. When answered, move the deci
 ### Q12. Expected scale?
 
 **Question:** What is the expected number of machines and users (order of magnitude)?  
-**Impact:** Indexing, caching, pagination, hosting sizing — not a Phase 1 blocker.
+**Impact:** Indexing, caching, pagination, hosting sizing — not a Phase 1 blocker.  
+**Free-tier note (2026-11-04):** Zero ongoing fees preference means production hosting fit depends on this answer. Bounded assumptions and gaps are recorded in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) until Q12 is Confirmed.
 
 ---
 
@@ -89,7 +90,8 @@ Do not silently resolve these in application logic. When answered, move the deci
 ### Q13. Email notifications?
 
 **Question:** Are email notifications required (compliance expiry, hire events, maintenance due), or in-app only for v1?  
-**Impact:** Provider choice, templates, notification_settings, privacy.
+**Impact:** Provider choice, templates, notification_settings, privacy.  
+**Free-tier note (2026-11-04):** Paid notification SaaS conflicts with zero ongoing fees ([`PREFERENCES.md`](./PREFERENCES.md)). Prefer in-app or existing company SMTP; see [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).
 
 ---
 

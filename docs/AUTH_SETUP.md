@@ -90,27 +90,29 @@ Sign in at `/login`. Protected app routes require a session when Supabase is con
 
 ## 6. Online staging deployment (non-production)
 
-Full DNS + Vercel click-path: **`docs/STAGING_DEPLOY.md`**.
+**Default host (no paid Vercel Pro):** **Netlify Free** — see [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) Path A and [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md). Repo `netlify.toml` targets OpenNext auto.  
+Vercel click-path (only if Pro approved): [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md).
 
-Customer-test URL (also the intended final hostname): `https://machinehire.ew.com.zm`.  
-Until go-live hardening (Phase 9), treat that host as **staging**: use a **non-production** Supabase project and staging env values only.
+Customer-test URL options: `https://<site>.netlify.app` first (**no DNS**), or later `https://machinehire.ew.com.zm` via CNAME-only.  
+Until go-live hardening (Phase 9), treat the host as **staging**: use a **non-production** Supabase Free project and staging env values only.
 
-**Preserve:** public site `https://ew.com.zm` / `www`, nameservers, and Titan email/MX — add only a `machinehire` CNAME (see staging doc).
+**Preserve:** public site `https://ew.com.zm` / `www`, nameservers, and Titan email/MX — add only a `machinehire` CNAME if branding the subdomain (optional).
 
-1. Host: **Vercel**, GitHub repo `Ahlamgit/EW-MachineHire`, branch `cursor/phase-2-auth-rbac-f54e` (or a branch based on it).
-2. Set staging environment variables (names only — paste values in the Vercel UI, never in chat/git):
+1. Host: **Netlify Free**, GitHub repo `Ahlamgit/EW-MachineHire`, branch `cursor/staging-deploy-prep-96e9` (or Phase 2 / agreed staging branch).
+2. Set staging environment variables (names only — paste values in the Netlify UI, never in chat/git):
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
    - `SUPABASE_SERVICE_ROLE_KEY` (server-only; if you need admin path / future privileged jobs)
-   - `NEXT_PUBLIC_APP_URL` = `https://machinehire.ew.com.zm`
+   - `NEXT_PUBLIC_APP_URL` = `https://<site>.netlify.app` (or `https://machinehire.ew.com.zm` after CNAME)
    - Ensure `DEV_ALLOW_UNCONFIGURED_SHELL` is **unset** or `false`
 3. In Supabase Auth settings (staging/dev project):
-   - **Site URL:** `https://machinehire.ew.com.zm`
-   - **Redirect URL:** `https://machinehire.ew.com.zm/auth/callback`
+   - **Site URL:** same as `NEXT_PUBLIC_APP_URL`
+   - **Redirect URL:** `<APP_URL>/auth/callback`
    - Keep local: `http://localhost:3000/auth/callback`
+   - Prefer **custom SMTP** for non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour)
 4. Confirm the Phase 2 migration is applied on the **same** development/staging Supabase project the staging app uses.
-5. Deploy the build (Vercel Git deploy / `npm run build`). Smoke-test `/login` and a protected route.
-6. Do **not** auto-merge PRs; do **not** point staging secrets at a production Supabase project.
+5. Deploy via Netlify Git (`npm run build` / OpenNext). Smoke-test `/login` and a protected route. Keep the Free project active (≥ weekly DB activity) to avoid inactivity pause.
+6. Do **not** auto-merge PRs; do **not** point staging secrets at a production Supabase project; do **not** purchase paid plans.
 
 ## 7. What remains unverified without credentials on this agent VM
 

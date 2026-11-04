@@ -4,7 +4,8 @@
 **App:** Next.js 15 App Router + Supabase SSR (`@supabase/ssr`), middleware session gate, auth callback route.  
 **Constraints:** Vercel account is **Hobby**; user has **not** approved paid hosting. Do **not** purchase plans, change DNS for apex/`www`, touch Titan MX, rewrite the app, or merge without review.
 
-Related: [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) (earlier Vercel-first runbook — see §5 below for Hobby commercial caveat).
+Related: [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) (earlier Vercel-first runbook — see §5 below for Hobby commercial caveat).  
+**Zero ongoing fees:** [`PREFERENCES.md`](./PREFERENCES.md) · free-tier fit & limits: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) (honest production gaps; Netlify `netlify.toml` on this branch).
 
 ---
 
@@ -47,7 +48,7 @@ Costs and limits below are from vendor public docs as of assessment date. They c
 |--------|----------------|----------------------------|---------------------------|--------------|---------------------|
 | **Company Hostinger shared (current)** | Already paid for marketing site; Node apps need higher plan | N/A (wrong runtime today) | **Poor** — static/LiteSpeed shared; Node Web Apps not confirmed | High + plan risk | **No** for this app without upgrade |
 | **Vercel Hobby** (existing account) | $0; ~100 GB transfer, 1M invocations, etc. | **No** — Hobby = **non-commercial personal only**; commercial needs Pro/Enterprise ([fair use](https://vercel.com/docs/limits/fair-use-guidelines)) | **Excellent** (native) | Lowest | **Blocked** by policy until Pro approved |
-| **Netlify Free** (credit plan) | $0; **300 credits/mo** hard limit (e.g. 15 credits/prod deploy, 2 credits/10k requests, 20 credits/GB bandwidth, 10 credits/GB-hour compute). Site **pauses** when credits exhaust — no surprise bill if you stay on Free | **Yes** — Free allows commercial; usage-capped | **Good** — OpenNext adapter, App Router / SSR / middleware / Server Actions documented | Low (Git import; no app rewrite) | **Best quick path** |
+| **Netlify Free** (credit plan) | $0; **300 credits/mo** hard limit (e.g. 15 credits/prod deploy, 2 credits/10k requests, 20 credits/GB bandwidth, 10 credits/GB-hour compute). Site **pauses** when credits exhaust — no surprise bill if you stay on Free. See [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) for production gaps (credits, org-private Git) | **Yes** — Free allows commercial; usage-capped | **Good** — OpenNext auto (`netlify.toml`); App Router / SSR / middleware / Server Actions | Low (Git import; no app rewrite) | **Best quick path** for staging; **not** confidently “forever prod” alone |
 | **Render Free** Web Service | $0 compute; **750 instance-hours/mo**; spins down after **15 min** idle (~**1 min** cold start); bandwidth/build minutes can suspend if exhausted **without** a payment method | **Yes** (no personal-only Free rule; docs say not for production) | **Good** — real Node `npm run build` + `npm start` | Low–medium | Good if demos tolerate cold starts |
 | **Cloudflare Workers Free** | $0; **100k req/day**, **10 ms CPU**/invocation | **Yes** (Workers Free allows commercial) | **Fair→Good** with OpenNext (or vinext for newer Next) — **adapter / config**, not zero-config | Medium (deps/config; avoid full rewrite) | Possible later; more friction now |
 | **Railway trial → Free** | Trial **$5 once / 30 days**; then **$1/mo** credit. Custom domain: **1 on trial, then 0** on Free | Own business use generally OK; Pro recommended for client/commercial shipping | **Good** — Node runtime | Low during trial | Short trial OK; custom domain weak after trial |
@@ -96,23 +97,28 @@ Use if you prefer a plain Node `next start` process identical to local productio
 
 ### Path A — fastest (recommended): Netlify Free + `*.netlify.app`
 
-1. Create/login **Netlify** Free account (no paid plan; do not enable auto-recharge).
-2. **Add new site** → Import from Git → `Ahlamgit/EW-MachineHire`.
+Repo includes `netlify.toml` (`npm run build`, publish `.next`, Node 20). OpenNext is applied automatically — do not pin `@netlify/plugin-nextjs`. Full free-tier limits + production gaps: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).
+
+1. Create/login **Netlify** Free account (no paid plan; do not enable auto-recharge — N/A on Free anyway).
+2. **Add new site** → Import from Git → `Ahlamgit/EW-MachineHire` (currently **public** — Free Git OK; org-owned **private** repos need Pro).
 3. Branch: `cursor/staging-deploy-prep-96e9` (or Phase 2 / staging branch you intend to test).
-4. Build settings (usually auto): build `npm run build`, publish dir left to Next runtime (do not force static `out/`).
+4. Build settings: confirm command `npm run build`, publish `.next` (from `netlify.toml` / auto). Do **not** force static `out/`.
 5. Site settings → **Environment variables** (staging Supabase only — never production secrets):
    - `NEXT_PUBLIC_APP_URL` = the Netlify URL (e.g. `https://<name>.netlify.app`)
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
+   - Recommended: `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_SUPPORT_EMAIL`
    - Leave `DEV_ALLOW_UNCONFIGURED_SHELL` unset/`false`
 6. Deploy → open `/login` on the Netlify URL.
-7. In **staging** Supabase → Auth URL config:
+7. In **staging** Supabase Free project → Auth URL config:
    - Site URL = that Netlify URL
    - Redirect: `https://<name>.netlify.app/auth/callback`
-8. Apply Phase 2 migration + assign admin per `AUTH_SETUP.md`.
-9. Share the Netlify URL with the customer for the test.
+   - Prefer custom SMTP before testing invites to non-team addresses (default Auth SMTP ≈ 2 emails/hour, non-prod intent).
+8. Apply Phase 2 migration + assign admin per `AUTH_SETUP.md`. Keep the Supabase project active (≥ weekly DB use) so Free inactivity pause does not hit mid-test.
+9. Share the Netlify URL with the customer for the test. Prefer Deploy Previews over many production publishes (15 credits each).
 
-**DNS:** none required for Path A.
+**DNS:** none required for Path A.  
+**Agent note:** No Netlify token in the Cloud Agent environment — UI deploy is a **user** action.
 
 ### Path B — branded subdomain later (optional, still $0 on Free)
 

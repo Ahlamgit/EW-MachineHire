@@ -4,8 +4,8 @@
 **App:** Next.js 15 App Router + Supabase SSR (`@supabase/ssr`), middleware session gate, auth callback route.  
 **Constraints:** Vercel account is **Hobby**; user has **not** approved paid hosting. Do **not** purchase plans, change DNS for apex/`www`, touch Titan MX, rewrite the app, or merge without review.
 
-Related: [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) (earlier Vercel-first runbook — see §5 below for Hobby commercial caveat).  
-**Zero ongoing fees:** [`PREFERENCES.md`](./PREFERENCES.md) · free-tier fit & limits: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) (honest production gaps; Netlify `netlify.toml` on this branch).
+Related: [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) (Path A Netlify Free click-path) · [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) (host-agnostic Node + Hostinger later) · [`deploy/netlify/README.md`](../deploy/netlify/README.md) (optional Netlify isolation).  
+**Zero ongoing fees:** [`PREFERENCES.md`](./PREFERENCES.md) · free-tier fit & limits: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).
 
 ---
 
@@ -97,28 +97,12 @@ Use if you prefer a plain Node `next start` process identical to local productio
 
 ### Path A — fastest (recommended): Netlify Free + `*.netlify.app`
 
-Repo includes `netlify.toml` (`npm run build`, publish `.next`, Node 20). OpenNext is applied automatically — do not pin `@netlify/plugin-nextjs`. Full free-tier limits + production gaps: [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).
+**Canonical click-path:** [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) §1.  
+Repo root `netlify.toml` is **optional** Netlify staging config (`npm run build`, publish `.next`, Node 20) — documented in [`deploy/netlify/README.md`](../deploy/netlify/README.md). OpenNext is applied automatically by Netlify — do not pin `@netlify/plugin-nextjs` or add OpenNext to `package.json`. Portable Node remains `npm run build` + `npm run start` ([`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md)).
 
-1. Create/login **Netlify** Free account (no paid plan; do not enable auto-recharge — N/A on Free anyway).
-2. **Add new site** → Import from Git → `Ahlamgit/EW-MachineHire` (currently **public** — Free Git OK; org-owned **private** repos need Pro).
-3. Branch: `cursor/staging-deploy-prep-96e9` (or Phase 2 / staging branch you intend to test).
-4. Build settings: confirm command `npm run build`, publish `.next` (from `netlify.toml` / auto). Do **not** force static `out/`.
-5. Site settings → **Environment variables** (staging Supabase only — never production secrets):
-   - `NEXT_PUBLIC_APP_URL` = the Netlify URL (e.g. `https://<name>.netlify.app`)
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`
-   - Recommended: `NEXT_PUBLIC_APP_NAME`, `NEXT_PUBLIC_SUPPORT_EMAIL`
-   - Leave `DEV_ALLOW_UNCONFIGURED_SHELL` unset/`false`
-6. Deploy → open `/login` on the Netlify URL.
-7. In **staging** Supabase Free project → Auth URL config:
-   - Site URL = that Netlify URL
-   - Redirect: `https://<name>.netlify.app/auth/callback`
-   - Prefer custom SMTP before testing invites to non-team addresses (default Auth SMTP ≈ 2 emails/hour, non-prod intent).
-8. Apply Phase 2 migration + assign admin per `AUTH_SETUP.md`. Keep the Supabase project active (≥ weekly DB use) so Free inactivity pause does not hit mid-test.
-9. Share the Netlify URL with the customer for the test. Prefer Deploy Previews over many production publishes (15 credits each).
+Summary: Free Netlify → GitHub import → branch `cursor/staging-deploy-prep-96e9` → staging env vars → deploy → Supabase Auth URLs for `*.netlify.app` → migration + admin → share Netlify URL. **DNS:** none. Prefer Deploy Previews over frequent production publishes.
 
-**DNS:** none required for Path A.  
-**Agent note:** No Netlify token in the Cloud Agent environment — UI deploy is a **user** action.
+**Agent note:** No Netlify token / browser authorize in the Cloud Agent — UI deploy is a **user** action.
 
 ### Path B — branded subdomain later (optional, still $0 on Free)
 
@@ -143,9 +127,9 @@ Only after Path A works:
 
 ---
 
-## 5. Relationship to earlier Vercel staging doc
+## 5. Relationship to staging / portable docs
 
-`STAGING_DEPLOY.md` correctly documents CNAME-only DNS and env/auth checklists for a Vercel-shaped deploy. **Update for policy:** with Hobby-only and no Pro approval, treat Vercel as **deferred**, not the default customer-test host. Prefer Netlify Free (this doc) until Pro is explicitly approved.
+`STAGING_DEPLOY.md` is the **Path A Netlify Free** runbook (`*.netlify.app`, zero DNS). `PORTABLE_HOSTING.md` keeps Hostinger migration possible without Netlify lock-in (app hosting vs DB/auth = separate later decisions). Vercel remains **deferred** (Hobby non-commercial; Pro unapproved).
 
 ---
 

@@ -31,7 +31,7 @@ EW Machine Hire must operate with **zero ongoing service fees**.
 - Prefer vendors that **stop or restrict** when free limits are reached rather than auto-charging.
 - Do **not** promise that any third-party free tier will remain free forever; re-check terms before claiming ongoing fitness.
 
-**Related:** [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md), [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md).
+**Related:** [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md), [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md), [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md), [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md).
 
 ---
 

@@ -6,7 +6,7 @@
 **Sources:** Vendor public pricing/docs as of assessment date. Limits change; re-verify before claiming ongoing fitness.  
 **Do not purchase** plans, credits, or add-ons. Do **not** promise permanent free availability from third parties.
 
-Related: [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md), [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md), [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) Q12/Q13.
+Related: [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md), [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md), [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md), [`deploy/netlify/README.md`](../deploy/netlify/README.md), [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) Q12/Q13.
 
 ---
 
@@ -161,17 +161,20 @@ Do **not** claim “fits ongoing company production on free tiers” until these
 |------|--------|
 | Preference documented | `docs/PREFERENCES.md` |
 | This constraints doc | Added |
-| `netlify.toml` | Added (OpenNext auto; do not pin legacy plugin) |
-| Exact Free staging steps | [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) §4 Path A + § below |
-| Agent deploy | **Not done** — no Netlify/Supabase credentials in environment |
+| `netlify.toml` | Optional / isolated (OpenNext auto; do not pin legacy plugin) — [`deploy/netlify/README.md`](../deploy/netlify/README.md) |
+| Portable hosting runbook | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) (`npm run build` / `npm start`, Hostinger later separate) |
+| Exact Free staging steps | [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) §1 Path A (+ summary below) |
+| Agent deploy | **Not done** — no Netlify/Supabase credentials; CLI login needs browser authorize |
 | DNS | **None required** for `*.netlify.app`; do not touch apex/`www`/MX |
 
 ### Exact user steps — Netlify Free staging (no purchase)
 
+Canonical detail: [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) §1.
+
 1. Create/login a **Netlify Free** account. Stay on Free. Do not enable paid plans or auto-recharge.
 2. **Add new site → Import from Git** → `Ahlamgit/EW-MachineHire` (public repo; Free Git OK).
 3. Branch: `cursor/staging-deploy-prep-96e9` (or Phase 2 / agreed staging branch).
-4. Build settings (auto / from `netlify.toml`): command `npm run build`, publish `.next`. Do **not** set static `out/`. Do **not** pin `@netlify/plugin-nextjs` unless debugging.
+4. Build settings (auto / from optional `netlify.toml`): command `npm run build`, publish `.next`. Do **not** set static `out/`. Do **not** pin `@netlify/plugin-nextjs`.
 5. **Environment variables** (staging Supabase only):
    - `NEXT_PUBLIC_APP_URL` = `https://<site-name>.netlify.app`
    - `NEXT_PUBLIC_SUPABASE_URL`
@@ -182,7 +185,7 @@ Do **not** claim “fits ongoing company production on free tiers” until these
 6. Deploy → open `/login` on the Netlify URL.
 7. Staging Supabase → Auth URL config: Site URL = Netlify URL; Redirect `https://<site-name>.netlify.app/auth/callback`.
 8. Apply Phase 2 migration; assign `admin` per [`AUTH_SETUP.md`](./AUTH_SETUP.md). Prefer custom SMTP even on staging if testing invites/resets for non-team emails.
-9. Share `*.netlify.app` for customer test. **No DNS** for Path A. Optional later: CNAME-only `machinehire` per hosting options doc — never change NS/apex/`www`/Titan MX.
+9. Share `*.netlify.app` for customer test. **No DNS** for Path A. Optional later: CNAME-only `machinehire` — never change NS/apex/`www`/Titan MX.
 
 ---
 
@@ -299,6 +302,8 @@ Staging with rare production publishes stays comfortable. Credit burn risk is **
 
 - [`PREFERENCES.md`](./PREFERENCES.md) — zero ongoing fees
 - [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) — manual Free backup / restore / wake
+- [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) — Path A Netlify Free clicks
+- [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) — portable Node + Hostinger later
 - [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) — host comparison + Path A/B/C
 - [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) — Vercel-shaped runbook (deferred while Hobby-only)
 - [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) — Q12 scale, Q13 email

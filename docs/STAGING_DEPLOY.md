@@ -1,181 +1,166 @@
-# Staging deployment prep (customer test)
+# Staging deployment (customer test) — Path A
 
-**Status:** Ready for human DNS + host account steps. No production secrets in git. Do **not** merge until reviewed. Do **not** change root/www DNS, nameservers, or email/MX.
-
-> **Hosting decision update (2026-11-04):** Independent assessment in [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md). Company site is **Hostinger LiteSpeed shared** (not suitable for this Next.js app as-is). **Vercel Hobby is non-commercial-only** — with no paid Pro approval, prefer **Netlify Free** (or Render Free) for customer testing. This file remains the Vercel-shaped runbook if Pro is later approved.  
-> **Zero ongoing fees** ([`PREFERENCES.md`](./PREFERENCES.md)): Netlify Free + Supabase Free limits, stop-vs-charge behaviour, and honest production gaps are in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md). Staging branch includes `netlify.toml` (OpenNext auto).
+**Status:** Ready for **human** Netlify Free + Supabase Free steps. No production secrets in git. Do **not** merge until reviewed. Do **not** change root/www DNS, nameservers, or email/MX. Do **not** purchase plans.
 
 | Item | Value |
 |------|--------|
-| **Intended app URL** | `https://machinehire.ew.com.zm` (optional; or host `*.netlify.app` first) |
-| **Public company site (preserve)** | `https://ew.com.zm` (root/www) |
+| **Staging URL (Path A — default)** | `https://<site-name>.netlify.app` (**zero DNS**) |
+| **Branded URL** | `https://machinehire.ew.com.zm` — **optional later only** (Path B) |
+| **Public company site (preserve)** | `https://ew.com.zm` / `www` |
 | **Email (preserve)** | Titan MX on apex — do not touch MX/nameservers |
-| **App branch for staging** | `cursor/phase-2-auth-rbac-f54e` (Phase 2) or a branch based on it |
-| **Selected host (default now)** | **Netlify Free** — see [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) |
-| **Selected host (if Pro approved)** | **Vercel** (Next.js App Router native) — steps below |
+| **App branch** | `cursor/staging-deploy-prep-96e9` (or Phase 2 / agreed staging branch) |
+| **Selected host** | **Netlify Free** (commercial OK; hard credit pause) |
+| **Data / Auth** | **Supabase Free** (non-production project) |
+| **Portable Node path** | `npm run build` + `npm run start` — [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) |
+| **Netlify isolation** | Optional bits — [`deploy/netlify/README.md`](../deploy/netlify/README.md) |
 | **Repo** | `Ahlamgit/EW-MachineHire` |
 
----
+**Related:** [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) · [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) · [`PREFERENCES.md`](./PREFERENCES.md) · [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) · [`AUTH_SETUP.md`](./AUTH_SETUP.md)
 
-## 1. Subdomain in-use check (agent probe)
-
-Probed on **2026-11-04** from the Cloud Agent environment:
-
-| Check | Result |
-|-------|--------|
-| `dig` A | No answer |
-| `dig` AAAA | No answer |
-| `dig` CNAME | No answer |
-| `host` / Google `8.8.8.8` | **NXDOMAIN** — hostname not configured |
-| `https://` / `http://` curl | Fail: **Could not resolve host** |
-| Apex NS (do not change) | `ns1.dns-parking.com` / `ns2.dns-parking.com` |
-| Apex MX (do not change) | Titan Email (`mx1.titan.email`, `mx2.titan.email`) |
-| `www.ew.com.zm` (preserve) | CNAME → `ew.com.zm` → A `82.180.175.43` |
-
-**Verdict:** `machinehire.ew.com.zm` is **free / unused**. Safe to add a single subdomain record for Vercel without touching root, www, NS, or MX.
+> Company Hostinger LiteSpeed shared hosts the **marketing** site only today — not this Next.js app. Later Hostinger Node support is a **separate verification**; app hosting vs DB/auth migration are **separate decisions** ([`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §8). Vercel Hobby is non-commercial; Pro is unapproved — deferred (§9).
 
 ---
 
-## 2. Why Vercel *if* Pro is approved
+## 1. What you must click (Path A — Free Netlify staging)
 
-- This app is **Next.js App Router** (`next` 15) — Vercel is the native production host (zero custom server config).
-- First-party GitHub integration with preview + production environments.
-- Edge/middleware and Server Components work without adapters.
-- Custom subdomain via **CNAME only** — preserves existing apex website + Titan email.
+No DNS. No purchase. Stay on **Free** (sites pause at 300 credits — preferred over auto-charge).
 
-**Hobby caveat:** Vercel Fair Use restricts Hobby to **non-commercial personal** use. A paid consultant / company customer-test deployment is commercial → needs **Pro** (not approved). Until then use **Netlify Free** per [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md).
+### A. Netlify account + site
 
----
+1. Open [https://app.netlify.com/signup](https://app.netlify.com/signup) (or login). Choose **Free** / Starter — do **not** upgrade; do **not** enable credit auto-recharge (N/A on Free).
+2. **Add new site** → **Import an existing project** → **GitHub**.
+3. Authorize GitHub if prompted; select **`Ahlamgit/EW-MachineHire`** (public → Free Git OK).
+4. Branch to deploy: **`cursor/staging-deploy-prep-96e9`** (or Phase 2 / staging branch you intend to test).
+5. Build settings (should match root `netlify.toml`):
+   - **Build command:** `npm run build`
+   - **Publish directory:** `.next`
+   - **Node:** 20 (from `netlify.toml`)
+   - Do **not** set static `out/`. Do **not** pin `@netlify/plugin-nextjs`.
+6. **Site configuration → Environment variables** — add staging values only (never paste into chat/git):
 
-## 3. Exact DNS record to add (user action)
-
-Add **one** record at the DNS host that currently serves `ew.com.zm` (zone behind `dns-parking.com` nameservers — typically the registrar/hosting panel where `ew.com.zm` DNS is edited).
-
-### Record (subdomain → Vercel)
-
-| Field | Value |
-|-------|--------|
-| **Type** | `CNAME` |
-| **Name / Host** | `machinehire` *(not the FQDN; some panels want `machinehire.ew.com.zm` — use the subdomain form they document)* |
-| **Value / Target / Points to** | **Copy from Vercel** after you add the domain (see §4). Format is project-specific, e.g. `d1d4fc829fe7bc7c.vercel-dns-017.com` or the target shown on the domain card. Do **not** invent a target from another project. |
-| **TTL** | `300` (5 minutes) while verifying; raise to `3600` after green |
-| **Proxy** | Off / DNS-only if the panel offers a CDN proxy (orange cloud, etc.) |
-
-### Do NOT add or change
-
-| Leave alone | Why |
-|-------------|-----|
-| Apex `A` / `AAAA` for `ew.com.zm` | Company public site |
-| `www` CNAME/A | Company public site |
-| Nameservers | Moving NS would risk site + email |
-| MX / SPF / DKIM / Titan records | Email must keep working |
-| Any record for hosts other than `machinehire` | Out of scope |
-
-### Optional ownership TXT (only if Vercel asks)
-
-If Vercel says the domain needs verification across accounts, it will show a `_vercel` **TXT** on the **apex**. Add **only** that TXT value Vercel displays — still do not change NS/MX.
-
----
-
-## 4. Account to connect now (user action)
-
-1. **Vercel** account (personal or team that will own EW Machine Hire staging).
-2. Connect **GitHub** → authorize repo **`Ahlamgit/EW-MachineHire`**.
-3. Import the project from that repo.
-4. Set **Production Branch** for this staging project to Phase 2 (`cursor/phase-2-auth-rbac-f54e`) **or** a dedicated staging branch based on it (this staging-prep branch is fine until Phase 2 merges).
-5. Add domain **`machinehire.ew.com.zm`** under **Project → Settings → Domains**.
-6. Copy the **exact CNAME target** Vercel shows into DNS (§3).
-7. Paste **staging** env vars in **Project → Settings → Environment Variables** (checklist below). Never paste secrets into chat or git.
-
-`VERCEL_TOKEN` was **not** available in the agent environment — CLI deploy was skipped. Use the dashboard click-path in §7.
-
----
-
-## 5. Environment variable checklist (staging)
-
-Set in the **Vercel** UI for **Production** (and Preview if you want PR previews against the same Supabase staging project). Values stay in the host UI only.
-
-| Variable | Required? | Notes |
-|----------|-----------|--------|
+| Variable | Required? | Example / note |
+|----------|-----------|----------------|
+| `NEXT_PUBLIC_APP_URL` | **Yes** | `https://<site-name>.netlify.app` (copy after first deploy if name unknown — set before auth smoke) |
+| `NEXT_PUBLIC_SUPABASE_URL` | **Yes** | Staging Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | **Yes** (one) | Public client key |
 | `NEXT_PUBLIC_APP_NAME` | Recommended | `EW Machine Hire` |
-| `NEXT_PUBLIC_APP_URL` | **Yes** | `https://machinehire.ew.com.zm` |
 | `NEXT_PUBLIC_SUPPORT_EMAIL` | Recommended | `machinehire@ew.com.zm` |
-| `NEXT_PUBLIC_SUPABASE_URL` | **Yes** | Staging/dev Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` **or** `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | **Yes** (one) | Public client key only |
-| `SUPABASE_SERVICE_ROLE_KEY` | Optional for login | Server-only; needed only for admin client / privileged jobs |
-| `DEV_ALLOW_UNCONFIGURED_SHELL` | **Must be unset or `false`** | Never `true` on staging |
+| `SUPABASE_SERVICE_ROLE_KEY` | Optional | Server-only; not needed for normal login |
+| `DEV_ALLOW_UNCONFIGURED_SHELL` | **Omit or `false`** | Never `true` on staging |
 
-**Do not** deploy with production Supabase secrets. Use a **non-production** Supabase project until Phase 9.
+7. **Deploy site**. Wait for green build.
+8. Open `https://<site-name>.netlify.app/login`.
 
-Presence-only local check (prints no secrets): `npm run check:supabase-env`.
+### B. Supabase (staging/dev project)
+
+9. Confirm Phase 2 migration is applied (`supabase/migrations/20261104120000_phase2_auth_rbac.sql`) — CLI `db push` or SQL editor ([`AUTH_SETUP.md`](./AUTH_SETUP.md)).
+10. **Authentication → URL configuration:**
+    - **Site URL:** `https://<site-name>.netlify.app`
+    - **Redirect URLs:** add `https://<site-name>.netlify.app/auth/callback`
+    - Keep: `http://localhost:3000/auth/callback`
+11. Create/invite a test user; assign `admin` role (SQL in `AUTH_SETUP.md`). Prefer custom SMTP if testing non-team invites (default ≈ 2 emails/hour).
+12. Keep the Free project **active** (≥ weekly DB use) so inactivity pause does not hit mid-test.
+
+### C. Smoke + share
+
+13. Sign in on the Netlify URL → open a protected shell route.
+14. Share **`https://<site-name>.netlify.app`** with the customer.
+15. Prefer **Deploy Previews / branch deploys** over many production publishes (15 credits each). Check **Usage** credits weekly.
+
+**DNS for Path A:** none. Preserve apex/`www`/NS/Titan MX.
 
 ---
 
-## 6. Supabase Auth redirect URLs (user action)
+## 2. Subdomain probe (optional Path B later)
 
-In the **staging/dev** Supabase project → **Authentication → URL configuration**:
+Probed **2026-11-04** — `machinehire.ew.com.zm` was **NXDOMAIN** (unused). Apex NS `dns-parking.com`; MX Titan. Evidence: store `media/staging/`.
 
-| Setting | Value |
-|---------|--------|
-| **Site URL** | `https://machinehire.ew.com.zm` |
-| **Redirect URLs** (add) | `https://machinehire.ew.com.zm/auth/callback` |
-| Keep local | `http://localhost:3000/auth/callback` |
+**Do not add DNS for Path A.** Path B (only after Path A works):
 
-Also keep Email provider enabled. Apply Phase 2 migration (`supabase/migrations/20261104120000_phase2_auth_rbac.sql`) on that same project before customer login tests. Assign an `admin` role per `docs/AUTH_SETUP.md`.
-
-App callback route: `src/app/auth/callback/route.ts` (exchanges `code` for session).
+1. Netlify → Domain management → add `machinehire.ew.com.zm`.
+2. At the DNS panel, add **only** CNAME `machinehire` → exact target Netlify shows.
+3. Do **not** change NS, apex A/AAAA, `www`, or Titan MX/SPF.
+4. Update `NEXT_PUBLIC_APP_URL` + Supabase Site URL + redirect to `https://machinehire.ew.com.zm`.
 
 ---
 
-## 7. Vercel click-path (no CLI token)
+## 3. Migrations, backups, portable Node
 
-1. Open [https://vercel.com/new](https://vercel.com/new).
-2. **Import** `Ahlamgit/EW-MachineHire` (connect GitHub if prompted).
-3. Framework Preset: **Next.js** (auto).
-4. Root Directory: `.` (repo root).
-5. Environment Variables: add the checklist from §5 (staging values only).
-6. Deploy. Confirm the default `*.vercel.app` URL builds and `/login` loads.
-7. **Settings → Domains → Add** `machinehire.ew.com.zm`.
-8. Add the shown **CNAME** at your DNS panel (§3). Wait for Vercel to show **Valid**.
-9. Smoke-test: `https://machinehire.ew.com.zm/login` → sign-in → a protected shell route.
+| Topic | Doc / command |
+|-------|----------------|
+| Env vars (all hosts) | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §3 · `.env.example` |
+| Migrations | `npx supabase db push` or SQL editor — [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §4 |
+| Backups | Manual `pg_dump` — [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) |
+| Auth URLs | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §5 |
+| Business data | Supabase only — [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §7 |
+| Remove Netlify later | Delete `netlify.toml`; keep `npm run build` / `npm start` — [`deploy/netlify/README.md`](../deploy/netlify/README.md) |
 
-### Optional CLI (only if you already have a token locally)
+Local production-mode check (no Netlify required):
 
 ```bash
-# Do not paste tokens into chat. Use `vercel login` or a local env var.
-npx vercel link
-npx vercel env pull   # optional local mirror — keep out of git
-npx vercel --prod     # only after env + domain are configured
+npm ci
+npm run build
+npm run start
 ```
 
-Agent note: `VERCEL_TOKEN` / `VERCEL_ORG_ID` were unset here — no CLI deploy attempted.
+---
+
+## 4. Netlify CLI (optional — user machine)
+
+Agent Cloud VM: CLI present but **not logged in**. `netlify login` opens a browser authorize URL and waits — **no deploy without your authorization**. Do not paste tokens into chat.
+
+On your laptop (secrets stay local):
+
+```bash
+npx netlify login          # browser approve — do not share the ticket URL in tickets with secrets
+npx netlify status
+npx netlify sites:create   # or link existing
+# Prefer Git UI deploy for Path A; CLI only if you already use it locally
+```
+
+If login/authorize is inconvenient, use the **dashboard click-path in §1** only.
 
 ---
 
-## 8. `vercel.json`
+## 5. Preserve checklist
 
-Not required for this Next.js App Router app. Vercel auto-detects Next.js. A committed `vercel.json` was intentionally omitted to avoid locking framework settings prematurely. Revisit only if you need redirects, headers, or cron later.
-
----
-
-## 9. Preserve checklist (before/after DNS edit)
-
-- [ ] `https://ew.com.zm` still loads (company site)
-- [ ] `https://www.ew.com.zm` still loads
+- [ ] `https://ew.com.zm` and `https://www.ew.com.zm` still load
 - [ ] Company email still receives (Titan MX unchanged)
-- [ ] Nameservers still `ns1`/`ns2.dns-parking.com` (unless you already managed DNS elsewhere without changing NS)
-- [ ] Only new record is `machinehire` CNAME (+ optional `_vercel` TXT if prompted)
+- [ ] Nameservers unchanged
+- [ ] Path A: **no** new DNS records
+- [ ] Path B (if ever): only `machinehire` CNAME (+ Netlify verification TXT if shown)
+- [ ] Staging Supabase ≠ production secrets
+- [ ] Netlify plan stays **Free**; no paid upgrades for this preference
 
 ---
 
-## 10. What the agent completed vs what you must do
+## 6. Done independently vs needs you
 
-| Done independently | Needs you |
-|--------------------|-----------|
-| NXDOMAIN / unused subdomain probe | Add CNAME at DNS panel |
-| Chose Vercel + documented exact record shape | Create/login Vercel + link GitHub repo |
-| Staging env checklist (no secrets) | Paste staging Supabase values in Vercel |
-| Auth callback URL notes | Set Supabase Site URL + redirect URLs |
-| Docs: this file, AUTH_SETUP + README staging sections | Confirm customer test users / admin role |
-| `npm run build` verification on staging branch | Trigger first deploy from Vercel UI |
-| No DNS mutation, no PR merge, no production secrets | Approve / merge when ready |
+| Done on this branch | Needs you |
+|---------------------|-----------|
+| Path A runbook + portable hosting doc | Netlify Free signup / Git import / deploy |
+| Isolated Netlify docs (`deploy/netlify/`, optional `netlify.toml`) | Paste staging Supabase env in Netlify UI |
+| Env / migration / backup / Auth URL documentation | Supabase Auth URLs + migration + admin role |
+| `npm run build` portable path unchanged | Browser authorize if using CLI; or dashboard-only |
+| No DNS mutation, no merge, no purchase | Share `*.netlify.app` for customer test |
+| Netlify CLI login attempted in agent — **blocked** on browser auth | Complete §1 clicks |
+
+---
+
+## 7. Hostinger / Vercel notes (not Path A)
+
+| Host | Staging now? | Note |
+|------|--------------|------|
+| **Netlify Free `*.netlify.app`** | **Yes (default)** | This document |
+| Hostinger shared LiteSpeed | No | Marketing site only; Node Web Apps **verify later**, separately from DB/auth |
+| Hostinger Node / VPS | Later | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §8 — Decisions A vs B |
+| Render Free | Alternative | Plain `next start`; cold starts — [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) Path C |
+| Vercel Hobby | No | Commercial fair-use restriction |
+| Vercel Pro | Deferred | Requires paid approval — not part of zero-fee Path A |
+
+### Deferred Vercel click-path (only if Pro later approved)
+
+1. [vercel.com/new](https://vercel.com/new) → import same repo → Next.js preset.
+2. Same env checklist as §1; `NEXT_PUBLIC_APP_URL` = Vercel or branded URL.
+3. Custom domain only via CNAME for `machinehire` — never touch apex/`www`/MX.
+4. No committed `vercel.json` required (Next auto-detect).

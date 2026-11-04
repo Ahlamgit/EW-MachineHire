@@ -2,7 +2,7 @@
 
 **Audience:** Operators keeping EW Machine Hire on **Supabase Free** under the zero ongoing fees preference ([`PREFERENCES.md`](./PREFERENCES.md)).  
 **Assessed:** 2026-11-04  
-**Related:** [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md)
+**Related:** [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) · portable hosting: [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md)
 
 Free tier does **not** include automatic backups. This runbook is manual. Do **not** purchase Pro or backup add-ons to satisfy this preference. Do **not** enable paid overages.
 

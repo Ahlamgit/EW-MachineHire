@@ -29,8 +29,10 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/PREFERENCES.md`](docs/PREFERENCES.md) | Stakeholder preferences (zero ongoing app service fees) |
 | [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md) | Netlify Free + Supabase Free limits, gaps, maintenance |
 | [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Free-tier manual backup / restore / inactivity wake |
-| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging runbook (Vercel-shaped); see hosting options for Hobby caveat |
+| [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging Path A: Netlify Free `*.netlify.app` (zero DNS) — exact user clicks |
+| [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md) | Host-agnostic `build`/`start`, env, migrations, backups, Hostinger later |
 | [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
+| [`deploy/netlify/README.md`](deploy/netlify/README.md) | Optional Netlify / OpenNext isolation (not required for Node hosts) |
 
 ---
 
@@ -85,11 +87,12 @@ Copy `.env.example` → `.env.local` and fill placeholders when a Supabase proje
 ### Staging (customer test)
 
 - **Preference:** zero ongoing app service fees — [`docs/PREFERENCES.md`](docs/PREFERENCES.md); limits/gaps — [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md).
-- **Recommended (no paid Vercel Pro):** **Netlify Free** + Supabase Free — start on `*.netlify.app` (zero DNS). `netlify.toml` is on the staging-prep branch. Steps: [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
-- **Optional branded URL later:** `https://machinehire.ew.com.zm` via **CNAME only** (subdomain was NXDOMAIN at last probe).
-- **Do not** change root, www, nameservers, or Titan email/MX.
-- Vercel Hobby is **non-commercial** under Vercel fair use; Pro is unpaid/unapproved — treat as deferred. Older click-path: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
-- **Honest prod note:** Free tiers are suitable for staging; ongoing company production has documented gaps (storage, inactivity pause, credits, Auth SMTP).
+- **Path A (default):** **Netlify Free** + Supabase Free on `*.netlify.app` (**zero DNS**). Exact clicks: [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md).
+- **Portable Node:** always `npm run build` + `npm run start` — [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md). Netlify/OpenNext is optional ([`deploy/netlify/README.md`](deploy/netlify/README.md)).
+- **Business data:** Supabase only — not hosting-local files.
+- **Optional branded URL later:** `https://machinehire.ew.com.zm` via **CNAME only** (Path B). Hostinger Node support = separate later verification; app hosting vs DB/auth = separate decisions.
+- **Do not** change root, www, nameservers, or Titan email/MX. Do not purchase for this preference.
+- Vercel Hobby is **non-commercial**; Pro unapproved — deferred. Comparison: [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md).
 
 ---
 
@@ -113,7 +116,7 @@ supabase/migrations  SQL migrations (none applied yet)
 
 **Phase 2:** auth routes, middleware session protection, Proposed RBAC schema + RLS SQL, permission helpers, users page catalogue. Live auth/RLS verification requires your Supabase project (`docs/AUTH_SETUP.md`).
 
-Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging deploy prep: `docs/STAGING_HOSTING_OPTIONS.md` + `docs/FREE_TIER_CONSTRAINTS.md` (Vercel-shaped: `docs/STAGING_DEPLOY.md`).
+Not included yet: real machine/customer/hire modules, finance, branch ACL, production hardening (Phase 9), offline PWA. Staging: `docs/STAGING_DEPLOY.md` + `docs/PORTABLE_HOSTING.md` + `docs/FREE_TIER_CONSTRAINTS.md`.
 
 ---
 

@@ -152,8 +152,9 @@ Confirmed capability areas:
 
 ## 9. Notifications (Selected module / Open email)
 
-- In-app notifications and alerts are a **Selected** module.
-- Whether **email** notifications are required is **Open** (Q13).
+- In-app notifications and alerts are a **Selected** module — use this channel first for operational alerts.
+- Whether **email** notifications are required is **Open** (Q13); treat email alerts as optional until Confirmed.
+- Auth invite / password-reset delivery (separate from Q13) should use existing Titan SMTP via Supabase custom SMTP with **no new recurring fees** — see [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) (**UNTESTED** until operators run the staging checks).
 
 ---
 

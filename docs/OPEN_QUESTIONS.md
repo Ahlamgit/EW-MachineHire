@@ -92,7 +92,8 @@ Do not silently resolve these in application logic. When answered, move the deci
 
 **Question:** Are email notifications required (compliance expiry, hire events, maintenance due), or in-app only for v1?  
 **Impact:** Provider choice, templates, notification_settings, privacy.  
-**Free-tier note (2026-11-04):** Paid notification SaaS conflicts with zero ongoing fees ([`PREFERENCES.md`](./PREFERENCES.md)). Prefer in-app or existing company SMTP; see [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).
+**Free-tier note (2026-11-04):** Paid notification SaaS conflicts with zero ongoing fees ([`PREFERENCES.md`](./PREFERENCES.md)). Prefer in-app or existing company SMTP; see [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md).  
+**Working posture (2026-11-04, not Confirmed):** Operational alerts stay **in-app** initially; email alerts remain **optional**. Auth invite/reset mail uses existing **Titan** via Supabase custom SMTP (no new fees) — procedure in [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) (**UNTESTED** until staging checks pass).
 
 ---
 

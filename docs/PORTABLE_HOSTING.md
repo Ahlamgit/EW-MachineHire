@@ -92,16 +92,17 @@ In the **staging/dev** Supabase project → **Authentication → URL configurati
 App callback: `src/app/auth/callback/route.ts`.  
 When you move from `*.netlify.app` → branded subdomain → Hostinger hostname, **update these three** (env APP_URL + Site URL + redirect) together.
 
-Prefer custom SMTP before non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour).
+Prefer Titan **custom SMTP** before non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour) — [`EMAIL_SMTP.md`](./EMAIL_SMTP.md). Delivery **UNTESTED** until staging checks pass. Keep operational alerts in-app (Q13 optional).
 
 ---
 
 ## 6. Backups
 
-Free Supabase has **no** automatic backups. Manual `pg_dump` / restore / inactivity wake: [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md).
+Free Supabase has **no** automatic backups. Company-PC scheduled `scripts/backup/export.sh` (cron / Task Scheduler), retention 7 daily + 4 weekly, restore drill: [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md).
 
-- Store dumps on **already-owned** company storage.
+- Store dumps on **already-owned** company storage (`EWM_BACKUP_ROOT`).
 - Do not buy backup SaaS for this preference.
+- Restore remains **UNTESTED** until the documented drill passes.
 - Hosting provider snapshots are **not** a substitute for Postgres dumps (business data is not on the web host disk).
 
 ---

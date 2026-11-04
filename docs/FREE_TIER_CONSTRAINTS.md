@@ -94,7 +94,7 @@ Free plan is usable for commercial/internal apps subject to Supabase Terms / AUP
 | Inactivity pause | **~1 week** insufficient DB activity → project **paused** | Warning email ~1 week before; restore from dashboard (restore window up to ~1 year). Paid plans do not auto-pause |
 | Over-quota billing | **No** charges on Free | Restrictions / pause / 402 — not a surprise invoice |
 
-**Auth email gap:** Default Supabase SMTP is unsuitable for company login/recovery at scale. Wire free/existing SMTP before relying on production Auth email.
+**Auth email gap:** Default Supabase SMTP is unsuitable for company login/recovery at scale. Wire free/existing SMTP (Titan → Supabase custom SMTP) before relying on production Auth email — procedure [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) (**UNTESTED** until staging checks). Operational alerts stay in-app (Q13 optional).
 
 ---
 
@@ -139,7 +139,8 @@ Do **not** claim “fits ongoing company production on free tiers” until these
 | Before prod push | Prefer Deploy Preview / branch deploy; batch production publishes to save 15 credits each |
 | Monthly | Manual Postgres backup (`pg_dump` or dashboard backup export if offered) stored on already-owned company storage |
 | Monthly | Review Storage size; purge or archive superseded compliance scans per retention policy (once Confirmed) |
-| On Auth setup | Configure **custom SMTP** using existing company mail if available; never rely on default 2/hr sender for staff |
+| On Auth setup | Configure **custom SMTP** using existing Titan mail ([`EMAIL_SMTP.md`](./EMAIL_SMTP.md)); never rely on default 2/hr sender for staff |
+| Daily (company PC) | Run `scripts/backup/export.sh` (cron / Task Scheduler) — retention 7 daily + 4 weekly ([`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md)) |
 | Ongoing | Keep Netlify on **Free**; do **not** enable auto-recharge (N/A on Free anyway) or upgrade “just in case” |
 | Ongoing | Re-read Netlify + Supabase pricing/fair-use pages when planning go-live; update this doc’s date |
 
@@ -212,7 +213,8 @@ Live Supabase credentials were **not** available in the agent VM. A **local meas
 | `scripts/capacity/measure-queries.sql` | Size/count SQL for local PG or linked Free Supabase |
 | `scripts/measure-usage.mjs` | Reports sizes/headroom; optional Management API; **never prints secrets** |
 | Settings → Free-tier usage + `GET /api/admin/usage` | In-app monitoring stub (admin / `settings:manage`) |
-| [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) | Manual Free-tier backup / restore / inactivity wake |
+| [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) | Company-PC scheduled Free-tier backup / restore drill / inactivity wake |
+| [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) | Titan + Supabase Auth SMTP (no new fees); invite/reset **UNTESTED** until checks |
 
 ```bash
 # Local Postgres example (see scripts output for redacted connection)
@@ -301,10 +303,10 @@ Staging with rare production publishes stays comfortable. Credit burn risk is **
 ## 10. Related documents
 
 - [`PREFERENCES.md`](./PREFERENCES.md) — zero ongoing fees
-- [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) — manual Free backup / restore / wake
+- [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) — company-PC Free backup / restore drill / wake
+- [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) — Titan + Supabase Auth SMTP
 - [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) — Path A Netlify Free clicks
 - [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) — portable Node + Hostinger later
 - [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) — host comparison + Path A/B/C
-- [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) — Vercel-shaped runbook (deferred while Hobby-only)
 - [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) — Q12 scale, Q13 email
 - [`ARCHITECTURE.md`](./ARCHITECTURE.md) — stack topology

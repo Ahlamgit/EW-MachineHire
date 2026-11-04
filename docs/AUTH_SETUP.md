@@ -109,7 +109,7 @@ Until go-live hardening (Phase 9), treat the host as **staging**: use a **non-pr
    - **Site URL:** same as `NEXT_PUBLIC_APP_URL`
    - **Redirect URL:** `<APP_URL>/auth/callback`
    - Keep local: `http://localhost:3000/auth/callback`
-   - Prefer **custom SMTP** for non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour)
+   - Prefer **custom SMTP** (existing Titan mailbox) for non-team invite/reset tests (default Auth SMTP ≈ 2 emails/hour) — exact fields and Titan limits: [`EMAIL_SMTP.md`](./EMAIL_SMTP.md). Delivery remains **UNTESTED** until staging checks in that doc pass.
 4. Confirm the Phase 2 migration is applied on the **same** development/staging Supabase project the staging app uses.
 5. Deploy via Netlify Git (`npm run build`; OpenNext auto on Netlify only). Smoke-test `/login` and a protected route. Keep the Free project active (≥ weekly DB activity) to avoid inactivity pause.
 6. Do **not** auto-merge PRs; do **not** point staging secrets at a production Supabase project; do **not** purchase paid plans; do **not** change DNS for Path A.
@@ -119,10 +119,12 @@ Until go-live hardening (Phase 9), treat the host as **staging**: use a **non-pr
 | Check | Status without local `.env.local` on the agent |
 |-------|-----------------------------------------------|
 | Email/password sign-in | Code present — run check on coordinator `/workspace` |
+| Invite / password-reset **email delivery** (Titan SMTP) | Documented in [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) — **UNTESTED** until human staging checks |
 | Session cookie refresh (middleware) | Code present — verify where `.env.local` exists |
 | RLS policies | SQL present — verify after `db push` on the dev project |
 | Permission helper / RPC | Code present — verify after admin role assign |
 | Service-role admin path | Stub — only if `SUPABASE_SERVICE_ROLE_KEY` is set server-side |
+| Backup restore drill | Scripts in `scripts/backup/` — **UNTESTED** until [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) §7 passes |
 
 ## 8. Is `SUPABASE_SERVICE_ROLE_KEY` required?
 

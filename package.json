@@ -9,7 +9,10 @@
     "lint": "next lint",
     "check:supabase-env": "node scripts/check-supabase-env.mjs",
     "capacity:seed": "node scripts/seed-capacity-demo.mjs",
-    "capacity:measure": "node scripts/measure-usage.mjs"
+    "capacity:measure": "node scripts/measure-usage.mjs",
+    "backup:export": "bash scripts/backup/export.sh",
+    "backup:prune": "bash scripts/backup/prune.sh",
+    "backup:restore-test": "bash scripts/backup/restore-test.sh"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.2",

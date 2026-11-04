@@ -15,7 +15,7 @@
 | **Netlify isolation** | Optional bits — [`deploy/netlify/README.md`](../deploy/netlify/README.md) |
 | **Repo** | `Ahlamgit/EW-MachineHire` |
 
-**Related:** [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) · [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) · [`PREFERENCES.md`](./PREFERENCES.md) · [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) · [`AUTH_SETUP.md`](./AUTH_SETUP.md)
+**Related:** [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) · [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) · [`PREFERENCES.md`](./PREFERENCES.md) · [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) · [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) · [`AUTH_SETUP.md`](./AUTH_SETUP.md)
 
 > Company Hostinger LiteSpeed shared hosts the **marketing** site only today — not this Next.js app. Later Hostinger Node support is a **separate verification**; app hosting vs DB/auth migration are **separate decisions** ([`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §8). Vercel Hobby is non-commercial; Pro is unapproved — deferred (§9).
 
@@ -58,7 +58,7 @@ No DNS. No purchase. Stay on **Free** (sites pause at 300 credits — preferred 
     - **Site URL:** `https://<site-name>.netlify.app`
     - **Redirect URLs:** add `https://<site-name>.netlify.app/auth/callback`
     - Keep: `http://localhost:3000/auth/callback`
-11. Create/invite a test user; assign `admin` role (SQL in `AUTH_SETUP.md`). Prefer custom SMTP if testing non-team invites (default ≈ 2 emails/hour).
+11. Create/invite a test user; assign `admin` role (SQL in `AUTH_SETUP.md`). Prefer Titan custom SMTP if testing non-team invites (default ≈ 2 emails/hour) — [`EMAIL_SMTP.md`](./EMAIL_SMTP.md). Mark invite/reset **UNTESTED** until those checks pass.
 12. Keep the Free project **active** (≥ weekly DB use) so inactivity pause does not hit mid-test.
 
 ### C. Smoke + share
@@ -90,7 +90,8 @@ Probed **2026-11-04** — `machinehire.ew.com.zm` was **NXDOMAIN** (unused). Ape
 |-------|----------------|
 | Env vars (all hosts) | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §3 · `.env.example` |
 | Migrations | `npx supabase db push` or SQL editor — [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §4 |
-| Backups | Manual `pg_dump` — [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) |
+| Backups | Company-PC scheduled export (`scripts/backup/`) — [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) (**restore UNTESTED**) |
+| Auth email | Titan → Supabase custom SMTP — [`EMAIL_SMTP.md`](./EMAIL_SMTP.md) (**delivery UNTESTED**) |
 | Auth URLs | [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §5 |
 | Business data | Supabase only — [`PORTABLE_HOSTING.md`](./PORTABLE_HOSTING.md) §7 |
 | Remove Netlify later | Delete `netlify.toml`; keep `npm run build` / `npm start` — [`deploy/netlify/README.md`](../deploy/netlify/README.md) |

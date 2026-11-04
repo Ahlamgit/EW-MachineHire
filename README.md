@@ -28,7 +28,8 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
 | [`docs/PREFERENCES.md`](docs/PREFERENCES.md) | Stakeholder preferences (zero ongoing app service fees) |
 | [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md) | Netlify Free + Supabase Free limits, gaps, maintenance |
-| [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Free-tier manual backup / restore / inactivity wake |
+| [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Company-PC scheduled Free-tier backup / restore drill / inactivity wake |
+| [`docs/EMAIL_SMTP.md`](docs/EMAIL_SMTP.md) | Titan mailbox + Supabase custom SMTP (Auth); Q13 in-app alerts first |
 | [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging Path A: Netlify Free `*.netlify.app` (zero DNS) — exact user clicks |
 | [`docs/PORTABLE_HOSTING.md`](docs/PORTABLE_HOSTING.md) | Host-agnostic `build`/`start`, env, migrations, backups, Hostinger later |
 | [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
@@ -77,6 +78,8 @@ Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` w
 | `npm run check:supabase-env` | Presence-only env check (no secret values printed) |
 | `npm run capacity:seed` | Seed DEMO capacity data (160 & 200 machines) for Free-tier size measurement |
 | `npm run capacity:measure` | Report DB/headroom estimates (no secrets printed) |
+| `npm run backup:export` | Scheduled logical DB export (needs `scripts/backup/backup.env`) |
+| `npm run backup:restore-test` | Print / run separate restore-test procedure (UNTESTED until operator drill) |
 
 ### Environment
 

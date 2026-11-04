@@ -186,9 +186,119 @@ Do **not** claim “fits ongoing company production on free tiers” until these
 
 ---
 
-## 9. Related documents
+## 9. Capacity assessment — 4 users · 150+ machines · no attachments (2026-11-04)
+
+**Working scale (stakeholder task constraint; Q12 still formally Open until Confirmed in OPEN_QUESTIONS):**
+
+| Dimension | Value |
+|-----------|--------|
+| Internal users | **4** |
+| Machines | **>150** — measure bounds **160** and **200** |
+| Attachments / Storage blobs | **None initially** (compliance metadata only; `storage_path` null) |
+| Paid overages | **Do not enable** |
+| Failure date promise | **None** — headroom only, no calendar failure claim |
+
+### 9.1 Measurement method
+
+Live Supabase credentials were **not** available in the agent VM. A **local measurement harness** was used:
+
+| Artifact | Role |
+|----------|------|
+| `scripts/capacity/schema.sql` | DEMO schema `demo_capacity` (disposable; not a Phase migration) |
+| `scripts/seed-capacity-demo.mjs` | Seeds ≥150 DEMO machines + hire/reading/fuel/maintenance/compliance **metadata** + audit |
+| `scripts/capacity/measure-queries.sql` | Size/count SQL for local PG or linked Free Supabase |
+| `scripts/measure-usage.mjs` | Reports sizes/headroom; optional Management API; **never prints secrets** |
+| Settings → Free-tier usage + `GET /api/admin/usage` | In-app monitoring stub (admin / `settings:manage`) |
+| [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) | Manual Free-tier backup / restore / inactivity wake |
+
+```bash
+# Local Postgres example (see scripts output for redacted connection)
+DATABASE_URL=postgresql://USER:***@127.0.0.1:5432/ewm_capacity_demo \
+  node scripts/seed-capacity-demo.mjs
+node scripts/measure-usage.mjs --from-seed-json=scripts/capacity/last-measurement.json
+```
+
+On a linked Free Supabase project: apply `scripts/capacity/schema.sql`, run the seed against `DATABASE_URL`, then `measure-queries.sql` (or `measure-usage.mjs`). Drop `demo_capacity` when finished — it is DEMO only.
+
+### 9.2 Seed density assumptions (explicit)
+
+Per machine over a **12-month** history window (metadata only):
+
+| Signal | Assumption |
+|--------|------------|
+| Closed hires | 2–3 + events (open/assign/close) |
+| Active hire share | ~25% of fleet |
+| Hours readings | 1.5 / month |
+| Fuel events | 3 / month |
+| Tyre events | 0.25 / month |
+| Maintenance records | 0.25 / month |
+| Compliance docs | 4 metadata rows (no file bytes) |
+| Audit events | 8 / machine |
+| Users / customers | 4 DEMO users; ~machines/4 DEMO customers |
+
+### 9.3 Measured DB size (local harness, 2026-11-04)
+
+Source: `scripts/capacity/last-measurement.json` (local Postgres 16; DEMO schema only). Live Supabase credentials were unavailable on the measurement host — re-run the same scripts against a linked Free project to confirm.
+
+| Machines | `demo_capacity` total | % of Free 500 MB | Headroom |
+|----------|----------------------|------------------|----------|
+| 160 | **3.88 MB** (4,063,232 B) | **0.775%** | **99.225%** |
+| 200 | **4.48 MB** (4,694,016 B) | **0.895%** | **99.105%** |
+
+Full DB file size on the empty local instance including catalogs was ~11–12 MB (not comparable 1:1 to a Supabase project’s reported “database size,” which includes other schemas). Indexes are included in `pg_total_relation_size`.
+
+**200-machine row counts (sample):** 550 hire agreements, 3,600 readings, 7,200 fuel events, 800 compliance metadata rows (0 with `storage_path`), 1,600 audit logs, 4 profiles.
+
+If live Free project measurements differ materially, replace the table above and re-check Storage/egress once attachments exist.
+
+### 9.4 Request volume & hosting consumption (estimate — not live Netlify)
+
+**Assumptions:** 4 users × 2 sessions/day × 25 page views/session × 22 working days; ~80 KB amortized response; 4 production deploys/month; ~0.5 GB-hour SSR/month.
+
+| Meter | Estimate | Free ceiling | Approx. headroom |
+|-------|----------|--------------|------------------|
+| Web requests | ~4,400 / month | via credits (2 / 10k) | ~0.9 credit |
+| Bandwidth | ~0.33 GB / month | via credits (20 / GB) | ~6.6 credits |
+| Prod deploys | 4 × 15 = 60 credits | 300 credits | — |
+| SSR compute | ~0.5 GB-hour | via credits (10 / GB-h) | ~5 credits |
+| **Combined credit estimate** | **~72 / 300** | 300 | **~75.9%** |
+| Auth MAUs | 4 | 50,000 | ~99.99% |
+
+Staging with rare production publishes stays comfortable. Credit burn risk is **operator-driven** (frequent prod deploys, large downloads) more than 4-user metadata traffic.
+
+### 9.5 Monthly growth estimate (explicit assumptions)
+
+| Assumption | Value |
+|------------|--------|
+| New machines / month | 2 |
+| Extra audit events / month | 2,000 × ~400 B |
+| Fuel events on existing fleet | 200 machines × 3 × ~200 B |
+| Attachments | still **off** |
+
+**Rough monthly DB growth:** on the order of **~0.5–2 MB/month** under these assumptions (dominated by fuel/audit text rows). This is **not** a failure-date forecast. Enabling compliance PDFs/photos shifts the limiter to **Storage 1 GB** and egress far sooner than Postgres metadata.
+
+### 9.6 Likely limiting resource & headroom
+
+| Priority | Resource | Headroom (this assessment) | Notes |
+|----------|----------|----------------------------|-------|
+| Quota (metadata-only) | **Netlify monthly credits** (among metered quotas) | Often the tightest *quota* under deploy-heavy ops; traffic-only use stays high headroom | Stop/pause — no Free auto-recharge |
+| Quota (if attachments later) | **Supabase Storage 1 GB** | ~100% unused now | Becomes primary gap when uploads start |
+| Quota (DB) | Supabase DB 500 MB | **~99.1%** headroom at 200 machines / 12 mo metadata | Watch audit retention years out |
+| Non-quota risk | **Inactivity pause (~7 days)** + **no automatic backups** | N/A % | Operational — see [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) |
+
+**Verdict for this scale:** Free Netlify + Free Supabase is **plausible for early company use** at 4 users / 160–200 machines **without attachments**, with high DB headroom, provided operators accept pause/backup discipline and conserve Netlify production deploys. Revisit immediately before enabling file uploads. Still **no permanence promise** on vendor free tiers.
+
+### 9.7 Monitoring added
+
+- `scripts/measure-usage.mjs` + capacity seed/measure SQL
+- System settings free-tier panel + admin `GET /api/admin/usage` (no service role in the browser)
+
+---
+
+## 10. Related documents
 
 - [`PREFERENCES.md`](./PREFERENCES.md) — zero ongoing fees
+- [`BACKUP_RECOVERY.md`](./BACKUP_RECOVERY.md) — manual Free backup / restore / wake
 - [`STAGING_HOSTING_OPTIONS.md`](./STAGING_HOSTING_OPTIONS.md) — host comparison + Path A/B/C
 - [`STAGING_DEPLOY.md`](./STAGING_DEPLOY.md) — Vercel-shaped runbook (deferred while Hobby-only)
 - [`OPEN_QUESTIONS.md`](./OPEN_QUESTIONS.md) — Q12 scale, Q13 email

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "check:supabase-env": "node scripts/check-supabase-env.mjs"
+    "check:supabase-env": "node scripts/check-supabase-env.mjs",
+    "capacity:seed": "node scripts/seed-capacity-demo.mjs",
+    "capacity:measure": "node scripts/measure-usage.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.2",

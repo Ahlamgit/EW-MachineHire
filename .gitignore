@@ -43,3 +43,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# capacity harness temp SQL (large DEMO seed)
+/scripts/capacity/.tmp-seed.sql

@@ -28,6 +28,7 @@ Documentation distinguishes **Selected**, **Confirmed**, **Proposed**, and **Ope
 | [`docs/AUTH_SETUP.md`](docs/AUTH_SETUP.md) | Private Supabase auth/RLS setup steps |
 | [`docs/PREFERENCES.md`](docs/PREFERENCES.md) | Stakeholder preferences (zero ongoing app service fees) |
 | [`docs/FREE_TIER_CONSTRAINTS.md`](docs/FREE_TIER_CONSTRAINTS.md) | Netlify Free + Supabase Free limits, gaps, maintenance |
+| [`docs/BACKUP_RECOVERY.md`](docs/BACKUP_RECOVERY.md) | Free-tier manual backup / restore / inactivity wake |
 | [`docs/STAGING_DEPLOY.md`](docs/STAGING_DEPLOY.md) | Staging runbook (Vercel-shaped); see hosting options for Hobby caveat |
 | [`docs/STAGING_HOSTING_OPTIONS.md`](docs/STAGING_HOSTING_OPTIONS.md) | Company Hostinger verdict + free hosting comparison (no Vercel Pro) |
 
@@ -72,6 +73,8 @@ Open [http://localhost:3000](http://localhost:3000). Sign-in lives at `/login` w
 | `npm run start` | Start production server |
 | `npm run lint` | ESLint |
 | `npm run check:supabase-env` | Presence-only env check (no secret values printed) |
+| `npm run capacity:seed` | Seed DEMO capacity data (160 & 200 machines) for Free-tier size measurement |
+| `npm run capacity:measure` | Report DB/headroom estimates (no secrets printed) |
 
 ### Environment
 

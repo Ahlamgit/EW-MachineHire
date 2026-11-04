@@ -1,0 +1,142 @@
+{
+  "measuredAt": "2026-11-04T17:09:04.095Z",
+  "freeCeilings": {
+    "supabaseDbBytes": 524288000,
+    "supabaseStorageBytes": 1073741824,
+    "supabaseEgressBytes": 5368709120,
+    "supabaseMau": 50000,
+    "netlifyCredits": 300,
+    "assessedUsers": 4,
+    "assessedMachinesLow": 160,
+    "assessedMachinesHigh": 200,
+    "attachments": "none initially"
+  },
+  "local": {
+    "mode": "database",
+    "connection": "postgresql://ewm_capacity:***@127.0.0.1:5432/ewm_capacity_demo",
+    "demoCapacityPresent": true,
+    "machines": 200,
+    "complianceRowsWithStoragePath": 0,
+    "demoCapacityBytes": 4694016,
+    "demoCapacityPretty": "4.48 MB",
+    "databaseBytes": 12934167,
+    "databasePretty": "12.33 MB",
+    "pctOfSupabaseFree500MB": 0.895,
+    "headroomPctOf500MB": 99.105,
+    "counts": {
+      "machines": 200,
+      "fuel_events": 7200,
+      "machine_readings": 3600,
+      "hire_agreements": 550,
+      "compliance_records": 800,
+      "audit_logs": 1600,
+      "profiles": 4
+    }
+  },
+  "seedSnapshotSummary": {
+    "measuredAt": "2026-11-04T17:08:52.499Z",
+    "results": [
+      {
+        "machineCount": 160,
+        "demoCapacityPretty": "3.88 MB",
+        "pctOfSupabaseFree500MB": 0.775,
+        "headroomPctOf500MB": 99.225
+      },
+      {
+        "machineCount": 200,
+        "demoCapacityPretty": "4.48 MB",
+        "pctOfSupabaseFree500MB": 0.895,
+        "headroomPctOf500MB": 99.105
+      }
+    ]
+  },
+  "supabaseManagement": {
+    "mode": "supabase_management",
+    "available": false,
+    "reason": "Set SUPABASE_ACCESS_TOKEN and SUPABASE_PROJECT_REF (or a real NEXT_PUBLIC_SUPABASE_URL) to query live project usage. Token never printed."
+  },
+  "hostingConsumptionEstimate": {
+    "assumptions": {
+      "users": 4,
+      "sessionsPerUserPerDay": 2,
+      "pageViewsPerSession": 25,
+      "workingDaysPerMonth": 22,
+      "avgResponseBytes": 80000,
+      "productionDeploysPerMonth": 4,
+      "ssrGbHoursPerMonth": 0.5,
+      "netlifyCreditCosts": {
+        "productionDeploy": 15,
+        "bandwidthPerGb": 20,
+        "requestsPer10k": 2,
+        "computePerGbHour": 10
+      }
+    },
+    "monthlyRequests": 4400,
+    "bandwidthGb": 0.328,
+    "netlifyCreditsEstimated": {
+      "deploys": 60,
+      "bandwidth": 6.56,
+      "requests": 0.88,
+      "compute": 5,
+      "total": 72.44,
+      "freeCeiling": 300,
+      "headroomPct": 75.9
+    },
+    "supabaseAuthMau": {
+      "estimated": 4,
+      "freeCeiling": 50000,
+      "headroomPct": 99.992
+    }
+  },
+  "monthlyGrowthEstimate": {
+    "assumptions": {
+      "newMachinesPerMonth": 2,
+      "bytesPerNewMachineBundle": 23470,
+      "extraAuditEventsPerMonth": 2000,
+      "bytesPerAuditEvent": 400,
+      "fuelEventsPerExistingMachinePerMonth": 3,
+      "bytesPerFuelEvent": 200,
+      "fleetSizeForGrowth": 200,
+      "attachmentsEnabled": false
+    },
+    "estimatedMonthlyGrowthBytes": 966940,
+    "estimatedMonthlyGrowthPretty": "0.92 MB",
+    "note": "Not a failure-date forecast. Headroom changes if attachments or denser logging are enabled."
+  },
+  "limitingResource": {
+    "likelyLimiting": {
+      "resource": "netlify_credits_300",
+      "usedPct": 24.1,
+      "headroomPct": 75.9,
+      "note": "Estimated from 4-user traffic assumptions (not live Netlify metrics)"
+    },
+    "ranked": [
+      {
+        "resource": "netlify_credits_300",
+        "usedPct": 24.1,
+        "headroomPct": 75.9,
+        "note": "Estimated from 4-user traffic assumptions (not live Netlify metrics)"
+      },
+      {
+        "resource": "supabase_db_500mb",
+        "usedPct": 0.895,
+        "headroomPct": 99.105,
+        "note": "Metadata-only DEMO harness vs Free DB ceiling"
+      },
+      {
+        "resource": "supabase_mau_50k",
+        "usedPct": 0.008,
+        "headroomPct": 99.992,
+        "note": "4 staff users"
+      },
+      {
+        "resource": "supabase_storage_1gb",
+        "usedPct": 0,
+        "headroomPct": 100,
+        "note": "No attachments initially — unused until uploads enabled"
+      }
+    ],
+    "operationalRiskNotQuota": "Supabase Free ~7-day inactivity pause and lack of automatic backups remain operational risks even with high quota headroom."
+  },
+  "secretsPrinted": false
+}

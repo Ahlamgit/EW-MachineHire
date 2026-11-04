@@ -81,7 +81,8 @@ Do not silently resolve these in application logic. When answered, move the deci
 
 **Question:** What is the expected number of machines and users (order of magnitude)?  
 **Impact:** Indexing, caching, pagination, hosting sizing — not a Phase 1 blocker.  
-**Free-tier note (2026-11-04):** Zero ongoing fees preference means production hosting fit depends on this answer. Bounded assumptions and gaps are recorded in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) until Q12 is Confirmed.
+**Free-tier note (2026-11-04):** Zero ongoing fees preference means production hosting fit depends on this answer. Bounded assumptions and gaps are recorded in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) until Q12 is Confirmed.  
+**Working assessment (2026-11-04, not yet Confirmed):** **4 users**, **>150 machines** (measure bounds 160–200), **no attachments initially**. Local DEMO harness + headroom notes in [`FREE_TIER_CONSTRAINTS.md`](./FREE_TIER_CONSTRAINTS.md) §9. Replace with Confirmed figures when stakeholders lock scale.
 
 ---
 

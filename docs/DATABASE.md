@@ -178,6 +178,9 @@ Apply concretely in migrations when tables are created:
 
 ---
 
-## 8. Phase 1 deliverable note
+## 8. Phase delivery notes
 
-No production schema has been applied. Entity list above is the refined **Proposed** baseline with UUID PKs, FKs, indexes, and constraints called out. The multi-machine hire agreement decision remains **Open** and must be confirmed before hiring migrations are finalised.
+- **Phase 1:** No schema applied; entity catalogue documented.
+- **Phase 2 migration:** `supabase/migrations/20261104120000_phase2_auth_rbac.sql` creates `profiles`, `roles`, `permissions`, `role_permissions`, `user_roles`, helpers, RLS, and Proposed seed data. Not applied to production from this repo automation.
+- Multi-machine hire agreement decision remains **Open** and must be confirmed before hiring migrations are finalised.
+- Branch-scoped RLS is **not** included (Q10 Open).

@@ -28,14 +28,15 @@ Phased delivery below is **Confirmed** by the project foundation brief. Do not s
 
 **Goals**
 
-- Supabase Auth integration (SSR session handling).
+- Supabase Auth integration (SSR session handling via `@supabase/ssr`).
 - Protected routes / middleware.
 - Profiles, roles, permissions schema + RLS baselines.
-- Admin UI stubs for user/role assignment.
-- Server-side permission checks.
+- Proposed permission matrix (`docs/PERMISSIONS.md`) — no branch restrictions assumed; no finance exposure by default.
+- Users page catalogue + server-side permission helpers.
+- Setup guide (`docs/AUTH_SETUP.md`) when credentials are private to the operator.
 
-**Depends on:** Phase 1; answers to scale/branches access questions where possible.  
-**Exit criteria:** Signed-in users only; RBAC enforced on server for a minimal permission set.
+**Depends on:** Phase 1; live verification depends on operator Supabase project.  
+**Exit criteria:** Code + SQL ready; signed-in-only when configured; Proposed RBAC seeded; live auth/RLS checks marked unverified until private setup completes.
 
 ---
 

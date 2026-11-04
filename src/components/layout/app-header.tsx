@@ -9,9 +9,18 @@ import { Button } from "@/components/ui/button";
 type AppHeaderProps = {
   onOpenMobileNav: () => void;
   hasLogo?: boolean;
+  email?: string | null;
+  roles?: string[];
+  configured?: boolean;
 };
 
-export function AppHeader({ onOpenMobileNav, hasLogo = false }: AppHeaderProps) {
+export function AppHeader({
+  onOpenMobileNav,
+  hasLogo = false,
+  email,
+  roles,
+  configured,
+}: AppHeaderProps) {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-3 border-b border-[var(--ew-border)] bg-[var(--ew-white)]/95 px-4 backdrop-blur md:px-6">
       <Button
@@ -34,13 +43,17 @@ export function AppHeader({ onOpenMobileNav, hasLogo = false }: AppHeaderProps) 
           Operations workspace
         </p>
         <p className="truncate text-xs text-[var(--ew-muted)]">
-          Foundation shell — business modules arrive in later phases
+          Phase 2 auth · RBAC baseline · modules still stubbed
         </p>
       </div>
 
       <div className="ml-auto flex items-center gap-1 sm:gap-2">
         <NotificationAreaPlaceholder />
-        <UserMenuPlaceholder />
+        <UserMenuPlaceholder
+          email={email}
+          roles={roles}
+          configured={configured}
+        />
       </div>
     </header>
   );

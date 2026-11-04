@@ -1,25 +1,33 @@
 /**
- * Server Supabase client stub (Phase 1).
- * Intended for Server Components, Route Handlers, and Server Actions.
- * Uses the anon key + user session patterns (SSR wiring in Phase 2).
+ * Server Supabase client with cookie session (SSR).
+ * Anon key only — never the service role.
  */
-import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+import { cookies } from "next/headers";
 import { getSupabasePublicEnv, isSupabaseConfigured } from "./env";
 
-/**
- * Creates a short-lived server client when configured.
- * Phase 2 will replace this with cookie-based SSR (`@supabase/ssr`).
- */
-export function createSupabaseServerClient(): SupabaseClient | null {
+export async function createSupabaseServerClient() {
   if (!isSupabaseConfigured()) {
     return null;
   }
 
   const { url, anonKey } = getSupabasePublicEnv();
-  return createClient(url!, anonKey!, {
-    auth: {
-      persistSession: false,
-      autoRefreshToken: false,
+  const cookieStore = await cookies();
+
+  return createServerClient(url!, anonKey!, {
+    cookies: {
+      getAll() {
+        return cookieStore.getAll();
+      },
+      setAll(cookiesToSet) {
+        try {
+          cookiesToSet.forEach(({ name, value, options }) => {
+            cookieStore.set(name, value, options);
+          });
+        } catch {
+          // Called from a Server Component without mutable cookies — middleware refresh handles this.
+        }
+      },
     },
   });
 }

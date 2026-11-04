@@ -78,7 +78,7 @@ export function AppSidebar({
         })}
       </nav>
       <div className="border-t border-[var(--ew-border)] px-4 py-3 text-xs leading-snug text-[var(--ew-muted)]">
-        Phase 1 shell · modules stubbed
+        Phase 2 auth · modules stubbed
       </div>
     </aside>
   );
